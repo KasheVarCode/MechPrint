@@ -7,6 +7,7 @@ const { title = 'Механика печати — сервисный центр
 
 import '../styles/global.css';
 import '../styles/themes.css';
+import subdomainLinksUrl from '../scripts/subdomainLinks.ts?url';
 ---
 
 <!doctype html>
@@ -37,5 +38,6 @@ import '../styles/themes.css';
 	</head>
 	<body>
 		<slot />
+		<script type="module" src={subdomainLinksUrl}></script>
 	</body>
 </html>

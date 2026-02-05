@@ -1,15 +1,6 @@
 ---
 import ThemeSwitcher from './ThemeSwitcher.astro';
 import { ru as i18n } from '../i18n/ru';
-import { buildSubdomainUrl } from '../utils/subdomainUrls';
-
-const appUrl =
-	import.meta.env.PUBLIC_APP_URL ??
-	buildSubdomainUrl({
-		subdomain: 'app',
-		hostname: Astro.url.hostname,
-		protocol: Astro.url.protocol,
-	});
 ---
 
 <header class="topbar">
@@ -36,7 +27,9 @@ const appUrl =
 				<h1 class="hero__title">{i18n.hero.title}</h1>
 				<p class="muted">{i18n.hero.subtitle}</p>
 				<div class="hero__actions">
-					<a class="btn btn-primary" href={appUrl}>{i18n.cta.cabinet}</a>
+					<a class="btn btn-primary" href="#" data-subdomain-link="app">
+						{i18n.cta.cabinet}
+					</a>
 				</div>
 			</div>
 		</div>
