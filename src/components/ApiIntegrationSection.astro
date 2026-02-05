@@ -8,14 +8,38 @@ import { ru as i18n } from '../i18n/ru';
 		<p class="muted sectionSubtitle">{i18n.api.subtitle}</p>
 	</div>
 
-	<div class="stepsGrid">
-		{ i18n.api.steps.map((s) => (
-			<article class="card stepCard">
-				<div class="stepCard__badge">{s.badge}</div>
-				<strong class="stepCard__title">{s.title}</strong>
-				<div class="muted stepCard__text">{s.text}</div>
-			</article>
-		))}
+	<div class="apiGrid card">
+		<div class="apiPanel apiPanel--schema">
+			<div class="apiPanel__head">
+				<strong class="apiPanel__title">{i18n.api.schema.title}</strong>
+				<div class="muted apiPanel__hint">{i18n.api.schema.hint}</div>
+			</div>
+
+			<div class="apiDiagram" aria-hidden="true">
+				<div class="apiNode apiNode--client">{i18n.api.schema.client}</div>
+				<div class="apiArrow">→</div>
+				<div class="apiNode apiNode--api">{i18n.api.schema.api}</div>
+				<div class="apiArrow">→</div>
+				<div class="apiNode apiNode--apps">{i18n.api.schema.apps}</div>
+				<div class="apiArrow">→</div>
+				<div class="apiNode apiNode--events">{i18n.api.schema.events}</div>
+			</div>
+		</div>
+
+		<div class="apiPanel apiPanel--code">
+			<div class="apiPanel__head">
+				<strong class="apiPanel__title">{i18n.api.code.title}</strong>
+				<div class="muted apiPanel__hint">{i18n.api.code.hint}</div>
+			</div>
+
+			<pre class="codeBlock"><code>{i18n.api.code.snippet}</code></pre>
+
+			<ul class="miniList">
+				{i18n.api.code.notes.map((n) => (
+					<li class="miniList__item">{n}</li>
+				))}
+			</ul>
+		</div>
 	</div>
 </section>
 

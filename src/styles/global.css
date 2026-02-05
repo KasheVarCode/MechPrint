@@ -640,6 +640,96 @@ a:hover {
 	gap: 14px;
 }
 
+.apiGrid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 18px;
+	padding: 18px;
+	border-radius: var(--radius-2);
+}
+
+.apiPanel {
+	display: grid;
+	align-content: start;
+	gap: 12px;
+	padding: 16px;
+	border-radius: calc(var(--radius-2) - 4px);
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background: color-mix(in srgb, var(--color-surface) 65%, transparent);
+}
+
+.apiPanel__head {
+	display: grid;
+	gap: 6px;
+}
+
+.apiPanel__title {
+	font-weight: 900;
+	letter-spacing: -0.02em;
+	font-size: clamp(16px, 1.7vw, 22px);
+}
+
+.apiPanel__hint {
+	font-size: 14px;
+	line-height: 1.45;
+}
+
+.apiDiagram {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+	align-items: center;
+	gap: 10px;
+	padding: 14px;
+	border-radius: 16px;
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background:
+		radial-gradient(900px 600px at 20% 20%, rgba(34, 211, 238, 0.14), transparent 60%),
+		radial-gradient(900px 600px at 80% 30%, rgba(124, 58, 237, 0.12), transparent 62%),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012));
+}
+
+.apiNode {
+	padding: 12px 12px;
+	border-radius: 14px;
+	text-align: center;
+	font-weight: 900;
+	letter-spacing: -0.02em;
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background: color-mix(in srgb, var(--color-bg) 35%, transparent);
+}
+
+.apiArrow {
+	opacity: 0.7;
+	font-weight: 900;
+}
+
+.codeBlock {
+	margin: 0;
+	padding: 14px;
+	border-radius: 16px;
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background: color-mix(in srgb, var(--color-bg) 62%, transparent);
+	overflow: auto;
+}
+
+.codeBlock code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+	font-size: 13px;
+	line-height: 1.5;
+	white-space: pre;
+}
+
+.miniList {
+	margin: 0;
+	padding-left: 18px;
+	display: grid;
+	gap: 8px;
+}
+
+.miniList__item {
+	line-height: 1.45;
+}
+
 .stepCard {
 	grid-column: span 4;
 	padding: 16px;
@@ -830,6 +920,10 @@ a:hover {
 	}
 
 	.split {
+		grid-template-columns: 1fr;
+	}
+
+	.apiGrid {
 		grid-template-columns: 1fr;
 	}
 }
