@@ -1,0 +1,41 @@
+---
+export interface Props {
+	title?: string;
+}
+
+const { title = 'Механика печати — сервисный центр по ремонту оргтехники' } = Astro.props;
+
+import '../styles/global.css';
+import '../styles/themes.css';
+---
+
+<!doctype html>
+<html lang="ru" data-theme="main">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<script is:inline>
+			(() => {
+				const STORAGE_KEY = 'mechprint.theme';
+				const THEMES = new Set(['main', 'noir', 'motoko', 'kawaii']);
+				const MIGRATE = new Map([
+					['neon', 'noir'],
+					['anime', 'motoko'],
+					['cats', 'kawaii'],
+					['noir', 'main'],
+				]);
+
+				const saved = localStorage.getItem(STORAGE_KEY);
+				const next = (saved && THEMES.has(saved) && saved) || (saved && MIGRATE.get(saved)) || null;
+				if (next && THEMES.has(next)) document.documentElement.dataset.theme = next;
+			})();
+		</script>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

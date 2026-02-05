@@ -1,0 +1,183 @@
+---
+import { ru as i18n } from '../i18n/ru';
+
+type ThemeId = 'main' | 'noir' | 'motoko' | 'kawaii';
+
+const THEMES: Array<{ id: ThemeId; label: string }> = [
+	{ id: 'main', label: i18n.theme.options.main },
+	{ id: 'noir', label: i18n.theme.options.noir },
+	{ id: 'motoko', label: i18n.theme.options.motoko },
+	{ id: 'kawaii', label: i18n.theme.options.kawaii },
+];
+---
+
+<div class="theme-toggle" role="group" aria-label={i18n.theme.ariaLabel}>
+	{THEMES.map((t) => (
+		<button
+			class="theme-toggle__btn"
+			type="button"
+			data-theme={t.id}
+			aria-label={t.label}
+			aria-pressed="false"
+		>
+			{t.id === 'main' && (
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path
+						fill="currentColor"
+						d="M12 2l1.4 4.6L18 8l-4.6 1.4L12 14l-1.4-4.6L6 8l4.6-1.4L12 2Zm7 9l.9 2.9L23 15l-3.1 1.1L19 19l-1.1-2.9L15 15l2.9-1.1L19 11Z"
+					/>
+				</svg>
+			)}
+			{t.id === 'noir' && (
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path
+						fill="currentColor"
+						d="M12 3c2.6 0 4.9 1.1 6.6 2.8C20.3 7.5 21.4 9.8 21.4 12s-1.1 4.5-2.8 6.2C16.9 19.9 14.6 21 12 21c-2.6 0-4.9-1.1-6.6-2.8C3.7 16.5 2.6 14.2 2.6 12s1.1-4.5 2.8-6.2C7.1 4.1 9.4 3 12 3Zm0 2.2v13.6c1.9-.2 3.6-1.1 4.9-2.4 1.4-1.4 2.3-3.2 2.3-4.4s-.9-3-2.3-4.4c-1.3-1.3-3-2.2-4.9-2.4Z"
+					/>
+				</svg>
+			)}
+			{t.id === 'motoko' && (
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path
+						fill="currentColor"
+						d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z"
+					/>
+				</svg>
+			)}
+			{t.id === 'kawaii' && (
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path
+						fill="currentColor"
+						d="M12 21s-7-4.6-9.5-8.5C.7 9.5 2.1 6.7 5 6.2c1.7-.3 3.4.4 4.4 1.7 1-1.3 2.7-2 4.4-1.7 2.9.5 4.3 3.3 2.5 6.3C19 16.4 12 21 12 21Z"
+					/>
+				</svg>
+			)}
+		</button>
+	))}
+</div>
+
+<script is:inline>
+	(() => {
+		const STORAGE_KEY = 'mechprint.theme';
+		const THEMES = new Set(['main', 'noir', 'motoko', 'kawaii']);
+		const MIGRATE = new Map([
+			['neon', 'main'],
+			['anime', 'motoko'],
+			['cats', 'kawaii'],
+			['noir', 'main'],
+		]);
+
+		const root = document.documentElement;
+		const buttons = Array.from(document.querySelectorAll('[data-theme]')).filter(
+			(el) => el instanceof HTMLButtonElement
+		);
+		if (buttons.length === 0) return;
+
+		const normalize = (value) => {
+			if (!value) return null;
+			if (THEMES.has(value)) return value;
+			const migrated = MIGRATE.get(value);
+			return migrated && THEMES.has(migrated) ? migrated : null;
+		};
+
+		const setActive = (next) => {
+			for (const b of buttons) {
+				const theme = b.getAttribute('data-theme');
+				const pressed = theme === next;
+				b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+			}
+		};
+
+		const saved = normalize(localStorage.getItem(STORAGE_KEY));
+		const initial = normalize(root.dataset.theme) || saved || 'main';
+		root.dataset.theme = initial;
+		setActive(initial);
+
+		for (const b of buttons) {
+			b.addEventListener('click', () => {
+				const next = normalize(b.getAttribute('data-theme'));
+				if (!next) return;
+				root.dataset.theme = next;
+				setActive(next);
+				localStorage.setItem(STORAGE_KEY, next);
+			});
+		}
+	})();
+</script>
+
+<style>
+	.theme-toggle {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.theme-toggle__btn {
+		width: 40px;
+		height: 40px;
+		border-radius: 999px;
+		border: 1px solid var(--color-border);
+		cursor: pointer;
+		display: grid;
+		place-items: center;
+		color: rgba(255, 255, 255, 0.92);
+		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+		background: var(--color-surface);
+		position: relative;
+		isolation: isolate;
+	}
+
+	.theme-toggle__btn svg {
+		width: 18px;
+		height: 18px;
+		opacity: 0.95;
+		filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+	}
+
+	.theme-toggle__btn[data-theme='main'] {
+		background: linear-gradient(135deg, rgba(34, 211, 238, 0.95), rgba(96, 165, 250, 0.95));
+	}
+
+	.theme-toggle__btn[data-theme='noir'] {
+		color: rgba(245, 245, 245, 0.95);
+		background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(120, 120, 120, 0.55));
+	}
+
+	.theme-toggle__btn[data-theme='motoko'] {
+		background: linear-gradient(135deg, rgba(0, 255, 209, 0.95), rgba(163, 255, 18, 0.85));
+	}
+
+	.theme-toggle__btn[data-theme='motoko']::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background: repeating-linear-gradient(
+			180deg,
+			rgba(0, 0, 0, 0.16) 0px,
+			rgba(0, 0, 0, 0.16) 1px,
+			transparent 1px,
+			transparent 4px
+		);
+		opacity: 0.35;
+		z-index: -1;
+	}
+
+	.theme-toggle__btn[data-theme='kawaii'] {
+		color: rgba(17, 24, 39, 0.92);
+		background: linear-gradient(135deg, rgba(251, 113, 133, 0.95), rgba(34, 197, 94, 0.75));
+	}
+
+	.theme-toggle__btn[aria-pressed='true'] {
+		transform: translateY(-1px);
+		box-shadow:
+			0 14px 34px rgba(0, 0, 0, 0.28),
+			0 0 0 3px color-mix(in srgb, var(--color-primary) 35%, transparent);
+	}
+
+	.theme-toggle__btn:focus-visible {
+		outline: 3px solid var(--color-focus);
+		outline-offset: 3px;
+	}
+</style>
+
