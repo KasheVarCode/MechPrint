@@ -1,0 +1,16 @@
+---
+export interface Props {
+	text: string;
+}
+
+const { text } = Astro.props;
+const parts = String(text ?? '').split('\n');
+---
+
+{parts.map((part, idx) => (
+	<>
+		{idx > 0 && <br />}
+		{part}
+	</>
+))}
+

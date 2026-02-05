@@ -26,6 +26,16 @@ body {
 	line-height: 1.5;
 }
 
+main {
+	scroll-snap-type: y mandatory;
+}
+
+.hero,
+.section {
+	scroll-snap-align: start;
+	scroll-snap-stop: always;
+}
+
 @media (min-width: 900px) {
 	body {
 		background-attachment: fixed;
@@ -148,7 +158,8 @@ a:hover {
 	position: relative;
 	overflow: clip;
 	isolation: isolate;
-	min-height: 90vh;
+	min-height: 100vh;
+	min-height: 100svh;
 }
 
 .hero__bg {
@@ -186,7 +197,7 @@ a:hover {
 	position: absolute;
 	top: 0;
 	right: 0;
-	left: 0;		
+	left: 0;
 	bottom: 0;
 	width: 90%;
 	background: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
@@ -194,16 +205,35 @@ a:hover {
 
 .hero__grid {
 	display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 20px;
-	align-items: stretch;
+	align-items: start;
+}
+
+.hero__content {
+	grid-column: 1;
 }
 
 .hero__title {
 	margin: 0;
-	font-size: clamp(28px, 3.6vw, 44px);
+	font-size: clamp(30px, 7vw, 44px);
 	letter-spacing: -0.03em;
 	line-height: 1.12;
+}
+
+.hero__titleLine {
+	display: block;
+}
+
+.hero__titleLine--primary {
+	font-size: 1.15em;
+}
+
+@media (min-width: 900px) {
+	.hero__title {
+		font-size: clamp(40px, 4.6vw, 72px);
+		line-height: 1.06;
+	}
 }
 
 .hero__actions {
@@ -211,6 +241,11 @@ a:hover {
 	flex-wrap: wrap;
 	gap: 10px;
 	margin-top: 16px;
+}
+
+.hero__lead {
+	font-size: clamp(14px, 1.3vw, 19px);
+	line-height: 1.55;
 }
 
 .hero__aside {
@@ -223,7 +258,586 @@ a:hover {
 }
 
 .section {
-	padding: 18px 0 60px;
+	/* ВАЖНО: не затираем padding-inline у .container */
+	padding-block: 18px 60px;
+	min-height: 100vh;
+	min-height: 100svh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	main {
+		scroll-snap-type: none;
+	}
+}
+
+.sectionHead {
+	display: grid;
+	gap: 8px;
+	margin-bottom: 18px;
+}
+
+.sectionTitle {
+	margin: 0;
+	font-size: clamp(22px, 2.8vw, 34px);
+	letter-spacing: -0.02em;
+}
+
+.sectionSubtitle {
+	margin: 0;
+	max-width: 78ch;
+}
+
+.featureGrid {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	gap: 14px;
+}
+
+.cabinetGrid {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	gap: 14px;
+}
+
+.featureCard {
+	padding: 16px;
+	display: grid;
+	gap: 10px;
+	min-height: 300px;
+}
+
+.featureCard__icon {
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+	display: grid;
+	place-items: center;
+	color: var(--color-text);
+	background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+.featureCard__icon svg {
+	width: 22px;
+	height: 22px;
+	opacity: 0.9;
+}
+
+.featureCard__title {
+	font-weight: 800;
+	font-size: clamp(16px, 1.6vw, 20px);
+}
+
+.featureCard__text {
+	font-size: 14px;
+	line-height: 1.45;
+}
+
+.featureGrid .featureCard {
+	grid-column: span 4;
+}
+
+.cabinetCard--requests {
+	grid-column: 1 / span 3;
+	grid-row: 1;
+}
+
+.cabinetCard--fleet {
+	grid-column: 4 / span 3;
+	grid-row: 1;
+}
+
+.cabinetCard--auth {
+	grid-column: 7 / span 3;
+	grid-row: 1 / span 2;
+}
+
+.cabinetCard--docs {
+	grid-column: 10 / span 3;
+	grid-row: 1;
+}
+
+.cabinetCard--map {
+	grid-column: 1 / span 6;
+	grid-row: 2;
+}
+
+.cabinetCard--support {
+	grid-column: 10 / span 3;
+	grid-row: 2;
+}
+
+.cabinetCard {
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
+	/* не режем ширину текста под “картинку” */
+	padding-right: 16px;
+	/* контент всегда прижат к верху карточки */
+	align-content: start;
+	justify-content: start;
+}
+
+.cabinetCard__content {
+	position: relative;
+	z-index: 2;
+	display: grid;
+	align-content: start;
+	gap: 8px; /* только отступ от заголовка до текста */
+}
+
+.cabinetCard__media {
+	position: absolute;
+	right: -26px;
+	bottom: -22px;
+	width: min(80%, 300px);
+	height: min(70%, 220px);
+	overflow: hidden;
+	z-index: 1;
+	opacity: 0.9;
+	filter: saturate(1.06) contrast(1.06);
+	transform: rotate(-2deg);
+	/* “сливаем” с карточкой: без рамки и без видимого прямоугольника */
+	border: 0;
+	background-color: transparent;
+	-webkit-mask-image: radial-gradient(closest-side, rgba(0, 0, 0, 1) 62%, rgba(0, 0, 0, 0) 100%);
+	mask-image: radial-gradient(closest-side, rgba(0, 0, 0, 1) 62%, rgba(0, 0, 0, 0) 100%);
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	-webkit-mask-size: cover;
+	mask-size: cover;
+}
+
+/* На карточке “Безопасность” делаем медиа ещё тише — там много текста */
+.cabinetCard--auth .cabinetCard__media {
+	opacity: 0.35;
+}
+
+.cabinetCard__media::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-bg) 92%, transparent) 0%,
+		color-mix(in srgb, var(--color-bg) 70%, transparent) 38%,
+		transparent 72%
+	);
+}
+
+.cabinetCard__media--requests {
+	background-image:
+		url('/icons/cabinet/requests.webp'),
+		radial-gradient(800px 520px at 30% 20%, rgba(34, 211, 238, 0.14), transparent 58%);
+	background-repeat: no-repeat, no-repeat;
+	background-position: center, center, center;
+	background-size: contain, cover;
+}
+
+.cabinetCard__media--fleet {
+	background-image:
+		url('/icons/cabinet/fleet.webp'),
+		radial-gradient(900px 600px at 70% 35%, rgba(56, 189, 248, 0.12), transparent 62%);
+	background-repeat: no-repeat, no-repeat;
+	background-position: center, center, center;
+	background-size: contain, cover;
+}
+
+.cabinetCard__media--auth {
+	background-image:
+		url('/icons/cabinet/security.webp'),
+		radial-gradient(900px 600px at 65% 30%, rgba(124, 58, 237, 0.14), transparent 62%);
+	background-repeat: no-repeat, no-repeat;
+	background-position: center, center, center;
+	background-size: contain, cover;
+}
+
+.cabinetCard__media--docs {
+	background-image:
+		url('/icons/cabinet/docs.webp'),
+		radial-gradient(900px 600px at 55% 25%, rgba(236, 72, 153, 0.11), transparent 64%);
+	background-repeat: no-repeat, no-repeat;
+	background-position: center, center, center;
+	background-size: contain, cover;
+}
+
+.cabinetCard__media--support {
+	background-image:
+		url('/icons/cabinet/support.webp'),
+		radial-gradient(900px 600px at 45% 35%, rgba(163, 255, 18, 0.1), transparent 64%);
+	background-repeat: no-repeat, no-repeat;
+	background-position: center, center, center;
+	background-size: contain, cover;
+}
+
+.cabinetCard__media--map {
+	right: -30px;
+	bottom: -28px;
+	width: min(78%, 580px);
+	height: min(74%, 300px);
+	transform: rotate(-1deg);
+	background-image:
+		url('/icons/cabinet/map.webp'),
+		radial-gradient(
+			240px 160px at 25% 30%,
+			color-mix(in srgb, var(--color-primary) 14%, transparent),
+			transparent 64%
+		),
+		radial-gradient(260px 190px at 70% 65%, rgba(56, 189, 248, 0.11), transparent 66%);
+	background-repeat: no-repeat, no-repeat, no-repeat;
+	background-position: center, center, center, center;
+	background-size: contain, cover, cover;
+}
+
+.split {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 18px;
+	padding: 18px;
+	border-radius: var(--radius-2);
+}
+
+.split__media {
+	border-radius: calc(var(--radius-2) - 4px);
+	overflow: hidden;
+	min-height: 320px;
+	background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+/* B2B: высота левого блока с картинками */
+#b2b .split__media,
+#b2b .rotator {
+	min-height: clamp(360px, 52vh, 560px);
+}
+
+.split__content {
+	display: grid;
+	align-content: start;
+	gap: 12px;
+	padding: 6px 6px 6px 2px;
+}
+
+.split__actions {
+	margin-top: 4px;
+}
+
+.rotator {
+	position: relative;
+	height: 100%;
+	min-height: 320px;
+	isolation: isolate;
+}
+
+.rotator__frame {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	animation: rotatorFade 15s infinite;
+	animation-timing-function: ease-in-out;
+	will-change: opacity;
+	background-size: cover;
+	background-position: center;
+	filter: saturate(1.05) contrast(1.08);
+}
+
+.rotator__frame--one {
+	opacity: 1;
+	animation-delay: 0s;
+	background-image:
+		radial-gradient(800px 500px at 20% 20%, rgba(34, 211, 238, 0.22), transparent 55%),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+}
+
+.rotator__frame--two {
+	animation-delay: 5s;
+	background-image:
+		radial-gradient(900px 600px at 70% 25%, rgba(124, 58, 237, 0.22), transparent 58%),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+}
+
+.rotator__frame--three {
+	animation-delay: 10s;
+	background-image:
+		radial-gradient(900px 600px at 50% 30%, rgba(236, 72, 153, 0.18), transparent 60%),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012));
+}
+
+/* B2B: подменяем “заглушки” реальными картинками брендов */
+.split--b2b .rotator__frame--one {
+	background-image:
+		url('/icons/B2B/Kyocera.webp'),
+		radial-gradient(800px 520px at 22% 22%, rgba(34, 211, 238, 0.18), transparent 58%),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+	background-repeat: no-repeat, no-repeat, no-repeat;
+	background-position: 70% 55%, center, center;
+	background-size: contain, cover, cover;
+}
+
+.split--b2b .rotator__frame--two {
+	background-image:
+		url('/icons/B2B/Ricoh.webp'),
+		radial-gradient(900px 600px at 72% 28%, rgba(124, 58, 237, 0.18), transparent 60%),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+	background-repeat: no-repeat, no-repeat, no-repeat;
+	background-position: 70% 55%, center, center;
+	background-size: contain, cover, cover;
+}
+
+.split--b2b .rotator__frame--three {
+	background-image:
+		url('/icons/B2B/Xerox.webp'),
+		radial-gradient(900px 600px at 52% 32%, rgba(236, 72, 153, 0.15), transparent 62%),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012));
+	background-repeat: no-repeat, no-repeat, no-repeat;
+	background-position: 70% 55%, center, center;
+	background-size: contain, cover, cover;
+}
+
+@keyframes rotatorFade {
+	0% { opacity: 0; }
+	14% { opacity: 1; }
+	33% { opacity: 1; }
+	47% { opacity: 0; }
+	100% { opacity: 0; }
+}
+
+.checkList {
+	list-style: none;
+	padding: 0;
+	margin: 6px 0 0 0;
+	display: grid;
+	gap: 10px;
+}
+
+.checkList__item {
+	display: grid;
+	grid-template-columns: 18px 1fr;
+	gap: 10px;
+	align-items: start;
+}
+
+.checkList__icon {
+	width: 18px;
+	height: 18px;
+	border-radius: 6px;
+	display: grid;
+	place-items: center;
+	background: color-mix(in srgb, var(--color-primary) 22%, transparent);
+	color: var(--color-text);
+	font-size: 12px;
+	line-height: 1;
+	margin-top: 2px;
+}
+
+.checkList__text {
+	line-height: 1.45;
+}
+
+.stepsGrid {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	gap: 14px;
+}
+
+.stepCard {
+	grid-column: span 4;
+	padding: 16px;
+	display: grid;
+	gap: 10px;
+}
+
+.stepCard__badge {
+	width: 32px;
+	height: 32px;
+	border-radius: 10px;
+	display: grid;
+	place-items: center;
+	font-weight: 800;
+	background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+.stepCard__title {
+	font-weight: 800;
+	font-size: clamp(16px, 1.6vw, 20px);
+}
+
+.stepCard__text {
+	font-size: 14px;
+	line-height: 1.45;
+}
+
+.pricingGrid {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	gap: 14px;
+	align-items: stretch;
+}
+
+.pricingHead {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px;
+	flex-wrap: wrap;
+}
+
+.billingToggle {
+	display: inline-flex;
+	padding: 4px;
+	border-radius: 999px;
+	border: 1px solid color-mix(in srgb, var(--color-border) 75%, transparent);
+	background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+	backdrop-filter: blur(12px);
+}
+
+.billingToggle__btn {
+	border: 0;
+	background: transparent;
+	color: var(--color-text);
+	padding: 10px 12px;
+	border-radius: 999px;
+	font-weight: 800;
+	cursor: pointer;
+}
+
+.billingToggle__btn[aria-pressed='true'] {
+	background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.pricing[data-billing='month'] [data-price='year'] {
+	display: none;
+}
+
+.pricing[data-billing='year'] [data-price='month'] {
+	display: none;
+}
+
+.priceCard {
+	grid-column: span 4;
+	padding: 18px;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	align-content: start;
+	gap: 14px;
+	min-height: clamp(560px, 68vh, 780px);
+}
+
+.priceCard--featured {
+	border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
+	box-shadow:
+		var(--shadow-2),
+		0 0 0 3px color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+.priceCard__top {
+	display: grid;
+	gap: 10px;
+	align-content: start;
+}
+
+.priceCard__name {
+	font-weight: 900;
+	letter-spacing: -0.02em;
+	font-size: clamp(18px, 2.2vw, 26px);
+}
+
+.priceCard__price {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+}
+
+.priceCard__value {
+	font-size: 28px;
+	font-weight: 900;
+	letter-spacing: -0.02em;
+}
+
+.priceCard__discount {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	width: fit-content;
+	padding: 8px 12px;
+	border-radius: 999px;
+	font-weight: 800;
+	font-size: 18px;
+	color: var(--color-text);
+	background: color-mix(in srgb, var(--color-primary) 16%, transparent);
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+.priceCard__desc {
+	font-size: 14px;
+	line-height: 1.45;
+}
+
+.priceCard__list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	gap: 10px;
+	align-content: start;
+}
+
+.priceCard__item {
+	display: grid;
+	grid-template-columns: 18px 1fr;
+	gap: 10px;
+	align-items: start;
+	line-height: 1.45;
+}
+
+.priceCard__check {
+	width: 18px;
+	height: 18px;
+	border-radius: 6px;
+	display: grid;
+	place-items: center;
+	background: color-mix(in srgb, var(--color-primary) 22%, transparent);
+	font-size: 12px;
+	margin-top: 2px;
+}
+
+.priceCard__actions {
+	margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+	.featureGrid .featureCard {
+		grid-column: span 6;
+	}
+
+	.cabinetGrid .featureCard {
+		grid-column: span 12;
+		grid-row: auto;
+	}
+
+	.cabinetCard {
+		padding-right: 16px;
+	}
+
+	.stepCard {
+		grid-column: span 12;
+	}
+
+	.priceCard {
+		grid-column: span 12;
+	}
+
+	.split {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 560px) {
+	.featureGrid .featureCard {
+		grid-column: span 12;
+	}
 }
 
 .card--padded {

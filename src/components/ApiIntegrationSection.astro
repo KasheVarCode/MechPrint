@@ -1,0 +1,21 @@
+---
+import { ru as i18n } from '../i18n/ru';
+---
+
+<section class="container section" id="api">
+	<div class="sectionHead">
+		<h2 class="sectionTitle">{i18n.api.title}</h2>
+		<p class="muted sectionSubtitle">{i18n.api.subtitle}</p>
+	</div>
+
+	<div class="stepsGrid">
+		{ i18n.api.steps.map((s) => (
+			<article class="card stepCard">
+				<div class="stepCard__badge">{s.badge}</div>
+				<strong class="stepCard__title">{s.title}</strong>
+				<div class="muted stepCard__text">{s.text}</div>
+			</article>
+		))}
+	</div>
+</section>
+

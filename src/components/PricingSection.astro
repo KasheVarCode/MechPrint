@@ -1,0 +1,119 @@
+---
+import { ru as i18n } from '../i18n/ru';
+---
+
+<section class="container section pricing" id="pricing" data-billing="month">
+	<div class="sectionHead">
+		<div class="pricingHead">
+			<h2 class="sectionTitle">{i18n.pricing.title}</h2>
+			<div class="billingToggle" role="group" aria-label={i18n.pricing.billing.ariaLabel}>
+				<button class="billingToggle__btn" type="button" data-billing-btn="month" aria-pressed="true">
+					{i18n.pricing.billing.month}
+				</button>
+				<button class="billingToggle__btn" type="button" data-billing-btn="year" aria-pressed="false">
+					{i18n.pricing.billing.year}
+				</button>
+			</div>
+		</div>
+		<p class="muted sectionSubtitle">{i18n.pricing.subtitle}</p>
+	</div>
+
+	<div class="pricingGrid">
+		{i18n.pricing.plans.map((p) => {
+			const pricing = p.pricing;
+			const isCustom = typeof pricing === 'object' && pricing !== null && 'custom' in pricing;
+			const month = !isCustom && typeof pricing === 'object' && pricing !== null && 'month' in pricing ? pricing.month : null;
+			const year = !isCustom && typeof pricing === 'object' && pricing !== null && 'year' in pricing ? pricing.year : null;
+			const discountYear =
+				!isCustom && typeof pricing === 'object' && pricing !== null && 'discountYear' in pricing
+					? pricing.discountYear
+					: null;
+
+			return (
+				<article class={`card priceCard ${p.featured ? 'priceCard--featured' : ''}`}>
+					<div class="priceCard__top">
+						<strong class="priceCard__name">{p.name}</strong>
+						<div class="priceCard__price">
+							{isCustom ? (
+								<>
+									<span class="priceCard__value">{pricing.custom}</span>
+									{pricing.custom === i18n.pricing.billing.customLabel ? null : (
+										<span class="muted priceCard__period">{i18n.pricing.billing.customLabel}</span>
+									)}
+								</>
+							) : (
+								<>
+									<span class="priceCard__value" data-price="month">{month ?? '—'}</span>
+									<span class="priceCard__value" data-price="year">{year ?? '—'}</span>
+									<span class="muted priceCard__period" data-price="month">
+										{i18n.pricing.billing.perMonth}
+									</span>
+									<span class="muted priceCard__period" data-price="year">
+										{i18n.pricing.billing.perYear}
+									</span>
+								</>
+							)}
+						</div>
+						{!isCustom && discountYear ? (
+							<div class="priceCard__discount" data-price="year">
+								{i18n.pricing.billing.discountLabel} {discountYear}
+							</div>
+						) : null}
+						<div class="muted priceCard__desc">{p.description}</div>
+					</div>
+
+					<ul class="priceCard__list">
+						{p.features.map((f) => (
+							<li class="priceCard__item">
+								<span class="priceCard__check" aria-hidden="true">✓</span>
+								<span>{f}</span>
+							</li>
+						))}
+					</ul>
+
+					<div class="priceCard__actions">
+						<a class="btn btn-primary" href="#contact">
+							{p.cta}
+						</a>
+					</div>
+				</article>
+			);
+		})}
+	</div>
+</section>
+
+<script is:inline>
+	(() => {
+		const root = document.getElementById('pricing');
+		if (!root) return;
+
+		const STORAGE_KEY = 'mechprint.billing';
+		const buttons = Array.from(root.querySelectorAll('[data-billing-btn]')).filter(
+			(el) => el instanceof HTMLButtonElement
+		);
+		if (buttons.length === 0) return;
+
+		const setBilling = (next) => {
+			if (next !== 'month' && next !== 'year') return;
+			root.dataset.billing = next;
+			for (const b of buttons) {
+				const value = b.getAttribute('data-billing-btn');
+				b.setAttribute('aria-pressed', value === next ? 'true' : 'false');
+			}
+			try {
+				localStorage.setItem(STORAGE_KEY, next);
+			} catch {}
+		};
+
+		let initial = null;
+		try {
+			initial = localStorage.getItem(STORAGE_KEY);
+		} catch {}
+		setBilling(initial || root.dataset.billing || 'month');
+
+		for (const b of buttons) {
+			b.addEventListener('click', () => setBilling(b.getAttribute('data-billing-btn')));
+		}
+	})();
+</script>
+

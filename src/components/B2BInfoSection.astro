@@ -1,0 +1,35 @@
+---
+import NlText from './NlText.astro';
+import { ru as i18n } from '../i18n/ru';
+---
+
+<section class="container section" id="b2b">
+	<div class="split split--b2b card">
+		<div class="split__media" aria-hidden="true">
+			<div class="rotator">
+				<div class="rotator__frame rotator__frame--one"></div>
+				<div class="rotator__frame rotator__frame--two"></div>
+				<div class="rotator__frame rotator__frame--three"></div>
+			</div>
+		</div>
+
+		<div class="split__content">
+			<h2 class="sectionTitle">{i18n.b2b.title}</h2>
+			<p class="muted sectionSubtitle">{i18n.b2b.subtitle}</p>
+
+			<ul class="checkList">
+				{i18n.b2b.points.map((t) => (
+					<li class="checkList__item">
+						<span class="checkList__icon" aria-hidden="true">✓</span>
+						<span class="checkList__text"><NlText text={t} /></span>
+					</li>
+				))}
+			</ul>
+
+			<div class="split__actions">
+				<a class="btn btn-ghost" href="https://printservice.kashevarcode.com/">{i18n.b2b.cta}</a>
+			</div>
+		</div>
+	</div>
+</section>
+

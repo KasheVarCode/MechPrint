@@ -1,5 +1,10 @@
 ---
 import ThemeSwitcher from './ThemeSwitcher.astro';
+import NlText from './NlText.astro';
+import CabinetInfoSection from './CabinetInfoSection.astro';
+import B2BInfoSection from './B2BInfoSection.astro';
+import ApiIntegrationSection from './ApiIntegrationSection.astro';
+import PricingSection from './PricingSection.astro';
 import { ru as i18n } from '../i18n/ru';
 ---
 
@@ -23,9 +28,12 @@ import { ru as i18n } from '../i18n/ru';
 		</div>
 
 		<div class="container hero__grid">
-			<div class="stack">
-				<h1 class="hero__title">{i18n.hero.title}</h1>
-				<p class="muted">{i18n.hero.subtitle}</p>
+			<div class="hero__content stack">
+				<h1 class="hero__title">
+					<span class="hero__titleLine hero__titleLine--primary">{i18n.hero.title1}</span>
+					<span class="hero__titleLine">{i18n.hero.title2}</span>
+				</h1>
+				<h2 class="muted hero__subtitle"><NlText text={i18n.hero.subtitle} /></h2>
 				<div class="hero__actions">
 					<a
 						class="btn btn-primary"
@@ -36,15 +44,21 @@ import { ru as i18n } from '../i18n/ru';
 						{i18n.cta.cabinet}
 					</a>
 				</div>
+				<p class="muted hero__lead"><NlText text={i18n.hero.subtitle1} /></p>
 			</div>
 		</div>
 	</section>
+
+	<CabinetInfoSection />
+	<B2BInfoSection />
+	<ApiIntegrationSection />
+	<PricingSection />
 
 	<section class="container section" id="contact">
 		<div class="card card--padded">
 			<strong>{i18n.contact.title}</strong>
 			<div class="muted" style="margin-top: 8px;">
-				{i18n.contact.phoneLabel}: <a href="tel:+70000000000">+7 (000) 000-00-00</a>
+				{i18n.contact.phoneLabel}: <a href="tel:+70000000000">+7 (981) 750-61-61</a>
 			</div>
 			<div class="muted" style="margin-top: 6px;">{i18n.contact.placeholder}</div>
 		</div>

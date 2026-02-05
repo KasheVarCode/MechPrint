@@ -1,0 +1,62 @@
+---
+import NlText from './NlText.astro';
+import { ru as i18n } from '../i18n/ru';
+---
+
+<section class="container section" id="cabinet">
+	<div class="sectionHead">
+		<h2 class="sectionTitle">{i18n.cabinet.title}</h2>
+		<p class="muted sectionSubtitle">{i18n.cabinet.subtitle}</p>
+	</div>
+
+	<div class="cabinetGrid">
+		<article class="featureCard card cabinetCard cabinetCard--requests">
+			<div class="cabinetCard__content">
+				<strong class="featureCard__title">{i18n.cabinet.tiles.requests.title}</strong>
+				<div class="muted featureCard__text"><NlText text={i18n.cabinet.tiles.requests.text} /></div>
+			</div>
+			<div class="cabinetCard__media cabinetCard__media--requests" aria-hidden="true"></div>
+		</article>
+
+		<article class="featureCard card cabinetCard cabinetCard--fleet">
+			<div class="cabinetCard__content">
+				<strong class="featureCard__title">{i18n.cabinet.tiles.fleet.title}</strong>
+				<div class="muted featureCard__text"><NlText text={i18n.cabinet.tiles.fleet.text} /></div>
+			</div>
+			<div class="cabinetCard__media cabinetCard__media--fleet" aria-hidden="true"></div>
+		</article>
+
+		<article class="featureCard card cabinetCard cabinetCard--auth">
+			<div class="cabinetCard__content">
+				<strong class="featureCard__title">{i18n.cabinet.tiles.auth.title}</strong>
+				<div class="muted featureCard__text"><NlText text={i18n.cabinet.tiles.auth.text} /></div>
+			</div>
+			<div class="cabinetCard__media cabinetCard__media--auth" aria-hidden="true"></div>
+		</article>
+
+		<article class="featureCard card cabinetCard cabinetCard--docs">
+			<div class="cabinetCard__content">
+				<strong class="featureCard__title">{i18n.cabinet.tiles.docs.title}</strong>
+				<div class="muted featureCard__text"><NlText text={i18n.cabinet.tiles.docs.text} /></div>
+			</div>
+			<div class="cabinetCard__media cabinetCard__media--docs" aria-hidden="true"></div>
+		</article>
+
+		<article class="featureCard card cabinetCard cabinetCard--map">
+			<div class="cabinetCard__content">
+				<strong class="featureCard__title">{i18n.cabinet.tiles.map.title}</strong>
+				<div class="muted featureCard__text"><NlText text={i18n.cabinet.tiles.map.text} /></div>
+			</div>
+			<div class="cabinetCard__media cabinetCard__media--map" aria-hidden="true"></div>
+		</article>
+
+		<article class="featureCard card cabinetCard cabinetCard--support">
+			<div class="cabinetCard__content">
+				<strong class="featureCard__title">{i18n.cabinet.tiles.support.title}</strong>
+				<div class="muted featureCard__text"><NlText text={i18n.cabinet.tiles.support.text} /></div>
+			</div>
+			<div class="cabinetCard__media cabinetCard__media--support" aria-hidden="true"></div>
+		</article>
+	</div>
+</section>
+
