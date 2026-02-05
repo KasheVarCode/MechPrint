@@ -6,12 +6,21 @@
 	box-sizing: border-box;
 }
 
+:root {
+	/* Offset for anchor jumps under sticky topbar */
+	--topbar-offset: calc(92px + env(safe-area-inset-top, 0px));
+}
+
 html,
 body {
 	margin: 0;
 	padding: 0;
 	width: 100%;
 	min-height: 100%;
+}
+
+html {
+	scroll-padding-top: var(--topbar-offset);
 }
 
 body {
@@ -34,6 +43,16 @@ main {
 .section {
 	scroll-snap-align: start;
 	scroll-snap-stop: always;
+}
+
+/* Make anchors land below sticky topbar */
+.hero,
+.section[id] {
+	scroll-margin-top: var(--topbar-offset);
+}
+
+.siteFooter[id] {
+	scroll-margin-top: var(--topbar-offset);
 }
 
 @media (min-width: 900px) {
@@ -138,9 +157,171 @@ a:hover {
 	gap: 16px;
 }
 
+.topbar__right {
+	flex: 0 0 auto;
+}
+
 .brand {
 	display: grid;
 	gap: 2px;
+}
+
+.brand--link {
+	text-decoration: none;
+}
+
+.brand--link:hover {
+	text-decoration: none;
+}
+
+.topnav {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.topnav__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+}
+
+.topnav__list::-webkit-scrollbar {
+	display: none;
+}
+
+.topnav__link {
+	display: inline-flex;
+	align-items: center;
+	white-space: nowrap;
+	padding: 10px 12px;
+	border-radius: 999px;
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background: color-mix(in srgb, var(--color-surface) 65%, transparent);
+	backdrop-filter: blur(12px);
+	font-weight: 800;
+	font-size: clamp(13px, 1.1vw, 15px);
+	line-height: 1;
+	text-decoration: none;
+}
+
+.topnav__link:hover {
+	text-decoration: none;
+	border-color: color-mix(in srgb, var(--color-primary) 22%, var(--color-border));
+}
+
+.topnav__link:focus-visible {
+	outline: 3px solid var(--color-focus);
+	outline-offset: 3px;
+}
+
+.topnav__link:active {
+	transform: translateY(1px);
+}
+
+.siteFooter {
+	padding-block: 26px calc(22px + env(safe-area-inset-bottom, 0px));
+	border-top: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+	backdrop-filter: blur(12px);
+}
+
+.siteFooter__top {
+	padding-bottom: 18px; /* отступ от низа до “кредитов” */
+	font-size: 15px;
+	font-weight: 700;
+}
+
+.siteFooter__contacts {
+	max-width: 760px;
+}
+
+.siteFooter__title {
+	font-weight: 900;
+	letter-spacing: -0.02em;
+	font-size: clamp(16px, 1.4vw, 20px);
+}
+
+.siteFooter__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 12px;
+}
+
+.siteFooter__item {
+	display: grid;
+	grid-template-columns: 120px 1fr;
+	gap: 12px;
+	align-items: start;
+}
+
+.siteFooter__label {
+	white-space: nowrap;
+	font-size: 13px;
+	line-height: 1.2;
+	text-align: right;
+}
+
+.siteFooter__value {
+	min-width: 0;
+	line-height: 1.35;
+}
+
+.siteFooter__valueLink {
+	color: inherit;
+	text-decoration: none;
+	font-weight: 800;
+}
+
+.siteFooter__valueLink:hover {
+	text-decoration: underline;
+}
+
+.siteFooter__valueLink:focus-visible {
+	outline: 3px solid var(--color-focus);
+	outline-offset: 3px;
+	border-radius: 8px;
+}
+
+.siteFooter__bottom {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 8px;
+	padding-top: 16px;
+	border-top: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	font-size: 13px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.siteFooter__sep {
+	opacity: 0.7;
+}
+
+.siteFooter__link {
+	font-weight: 900;
+	letter-spacing: -0.01em;
+	text-decoration: none;
+}
+
+.siteFooter__link:hover {
+	text-decoration: underline;
+}
+
+.siteFooter__link:focus-visible {
+	outline: 3px solid var(--color-focus);
+	outline-offset: 3px;
+	border-radius: 8px;
 }
 
 .brand__name {
@@ -939,8 +1120,49 @@ a:hover {
 }
 
 @media (max-width: 900px) {
+	.topnav__list {
+		justify-content: flex-start;
+	}
+
+	/* Mobile: навигационные кнопки пока не показываем */
+	.topnav {
+		display: none;
+	}
+
+	html,
+	body {
+		overflow-x: hidden;
+	}
+
+	.siteFooter__item {
+		grid-template-columns: 1fr;
+		gap: 6px;
+	}
+
+	.siteFooter__label {
+		text-align: left;
+	}
+
 	.hero__grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 560px) {
+	/* API: схема вертикально, чтобы не ломать ширину */
+	.apiDiagram {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.apiNode {
+		padding: 10px 10px;
+		font-size: 14px;
+	}
+
+	.apiArrow {
+		justify-self: center;
+		transform: rotate(90deg);
 	}
 }
 

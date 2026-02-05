@@ -1,0 +1,32 @@
+---
+import ThemeSwitcher from './ThemeSwitcher.astro';
+import { ru as i18n } from '../i18n/ru';
+
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const homePrefix = isHome ? '' : '/';
+const toHash = (id: string) => `${homePrefix}#${id}`;
+---
+
+<header class="topbar">
+	<div class="container topbar__inner">
+		<a class="brand brand--link" href={homePrefix || '/'}>
+			<div class="brand__name">{i18n.brand.name}</div>
+		</a>
+
+		<nav class="topnav" aria-label={i18n.nav.ariaLabel}>
+			<ul class="topnav__list">
+				<li><a class="topnav__link" href={toHash('cabinet')}>{i18n.nav.links.cabinet}</a></li>
+				<li><a class="topnav__link" href={toHash('b2b')}>{i18n.nav.links.b2b}</a></li>
+				<li><a class="topnav__link" href={toHash('api')}>{i18n.nav.links.api}</a></li>
+				<li><a class="topnav__link" href={toHash('pricing')}>{i18n.nav.links.pricing}</a></li>
+				<li><a class="topnav__link" href={toHash('contact')}>{i18n.nav.links.contact}</a></li>
+				<li><a class="topnav__link" href="/vacancies">{i18n.nav.links.vacancies}</a></li>
+			</ul>
+		</nav>
+
+		<div class="topbar__right">
+			<ThemeSwitcher />
+		</div>
+	</div>
+</header>
+

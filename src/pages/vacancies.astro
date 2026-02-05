@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ru as i18n } from '../i18n/ru';
+---
+
+<Layout title={`Вакансии — ${i18n.brand.name}`}>
+	<main>
+		<section class="container section" id="vacancies">
+			<div class="sectionHead">
+				<h1 class="sectionTitle">{i18n.vacancies.title}</h1>
+				<p class="muted sectionSubtitle">{i18n.vacancies.subtitle}</p>
+			</div>
+
+			<div class="featureGrid">
+				{i18n.vacancies.items.map((v) => (
+					<article class="featureCard card">
+						<strong class="featureCard__title">{v.title}</strong>
+						<div class="muted featureCard__text">{v.text}</div>
+					</article>
+				))}
+			</div>
+
+			<div style="margin-top: 18px;">
+				<a class="btn btn-primary" href="/#contact">{i18n.vacancies.cta}</a>
+			</div>
+		</section>
+	</main>
+</Layout>
+

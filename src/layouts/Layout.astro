@@ -8,6 +8,9 @@ const { title = 'Механика печати — сервисный центр
 import '../styles/global.css';
 import '../styles/themes.css';
 import subdomainLinksUrl from '../scripts/subdomainLinks.ts?url';
+import Topbar from '../components/Topbar.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
 ---
 
 <!doctype html>
@@ -37,7 +40,9 @@ import subdomainLinksUrl from '../scripts/subdomainLinks.ts?url';
 		</script>
 	</head>
 	<body>
+		<Topbar />
 		<slot />
+		<SiteFooter />
 		<script type="module" src={subdomainLinksUrl}></script>
 	</body>
 </html>

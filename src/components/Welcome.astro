@@ -1,5 +1,4 @@
 ---
-import ThemeSwitcher from './ThemeSwitcher.astro';
 import NlText from './NlText.astro';
 import CabinetInfoSection from './CabinetInfoSection.astro';
 import B2BInfoSection from './B2BInfoSection.astro';
@@ -7,15 +6,6 @@ import ApiIntegrationSection from './ApiIntegrationSection.astro';
 import PricingSection from './PricingSection.astro';
 import { ru as i18n } from '../i18n/ru';
 ---
-
-<header class="topbar">
-	<div class="container topbar__inner">
-		<div class="brand">
-			<div class="brand__name">{i18n.brand.name}</div>
-		</div>
-		<ThemeSwitcher />
-	</div>
-</header>
 
 <main>
 	<section class="hero">
@@ -53,14 +43,4 @@ import { ru as i18n } from '../i18n/ru';
 	<B2BInfoSection />
 	<ApiIntegrationSection />
 	<PricingSection />
-
-	<section class="container section" id="contact">
-		<div class="card card--padded">
-			<strong>{i18n.contact.title}</strong>
-			<div class="muted" style="margin-top: 8px;">
-				{i18n.contact.phoneLabel}: <a href="tel:+70000000000">+7 (981) 750-61-61</a>
-			</div>
-			<div class="muted" style="margin-top: 6px;">{i18n.contact.placeholder}</div>
-		</div>
-	</section>
 </main>

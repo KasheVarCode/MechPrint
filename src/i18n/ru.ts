@@ -3,6 +3,17 @@ export const ru = {
 		name: 'Механика печати',
 		tagline: 'Сервисный центр по ремонту оргтехники',
 	},
+	nav: {
+		ariaLabel: 'Навигация',
+		links: {
+			cabinet: 'Личный кабинет',
+			b2b: 'B2B-магазин',
+			api: 'API интеграция',
+			pricing: 'Тарифы',
+			contact: 'Контакты',
+			vacancies: 'Вакансии',
+		},
+	},
 	theme: {
 		ariaLabel: 'Тема оформления',
 		options: {
@@ -164,6 +175,35 @@ export const ru = {
 		title: 'Контакты',
 		phoneLabel: 'Телефон',
 		placeholder: 'Санкт-Петербург, ул. Пугачёва 5-7',
+		labels: {
+			address: 'Адрес',
+			phone: 'Телефон',
+			email: 'Email',
+			whatsapp: 'WhatsApp',
+			telegram: 'Telegram',
+		},
+		address: 'Санкт-Петербург, ул. Пугачёва 5-7',
+		email: 'info@mechprint.ru',
+		phone: '+7 (981) 750-61-61',
+		whatsapp: '+7 (981) 750-61-61',
+		telegram: '@mechprint',
+		instagram: '@mechprint',
+		facebook: 'mechprint',
+		twitter: '@mechprint',
+	},
+	vacancies: {
+		title: 'Вакансии',
+		subtitle: 'Cписок вакансий, условия и форма отклика.',
+		cta: 'Отправить резюме',
+		items: [
+			{ title: 'Сервис-инженер', text: 'Ремонт и обслуживание оргтехники на выездах.' },
+			{ title: 'Менеджер по работе с клиентами', text: 'Сопровождение заявок, коммуникация, документы.' },
+			{ title: 'Склад / логистика', text: 'Учёт расходников, выдача, приёмка, перемещения.' },
+		],
+	},
+	footer: {
+		created: 'Created',
+		brand: 'KASHEVARCODE',
 	},
 } as const;
 

@@ -1,0 +1,65 @@
+---
+import { ru as i18n } from '../i18n/ru';
+
+const year = new Date().getFullYear();
+const digitsOnly = (value: string) => value.replace(/\D+/g, '');
+
+const phoneDigits = digitsOnly(i18n.contact.phone);
+const whatsappDigits = digitsOnly(i18n.contact.whatsapp);
+
+const telegramName = i18n.contact.telegram?.startsWith('@')
+	? i18n.contact.telegram.slice(1)
+	: i18n.contact.telegram;
+const telegramHref = telegramName ? `https://t.me/${telegramName}` : null;
+const whatsappHref = whatsappDigits ? `https://wa.me/${whatsappDigits}` : null;
+---
+
+<footer class="siteFooter" id="contact">
+	<div class="container siteFooter__top">
+		<div class="siteFooter__contacts">
+			<strong class="siteFooter__title">{i18n.contact.title}</strong>
+
+			<ul class="siteFooter__list">
+				<li class="siteFooter__item">
+					<span class="muted siteFooter__label">{i18n.contact.labels.address}</span>
+					<span class="siteFooter__value">{i18n.contact.address}</span>
+				</li>
+				<li class="siteFooter__item">
+					<span class="muted siteFooter__label">{i18n.contact.labels.phone}</span>
+					<a class="siteFooter__valueLink" href={`tel:${phoneDigits}`}>{i18n.contact.phone}</a>
+				</li>
+				<li class="siteFooter__item">
+					<span class="muted siteFooter__label">{i18n.contact.labels.email}</span>
+					<a class="siteFooter__valueLink" href={`mailto:${i18n.contact.email}`}>{i18n.contact.email}</a>
+				</li>
+				{whatsappHref && (
+					<li class="siteFooter__item">
+						<span class="muted siteFooter__label">{i18n.contact.labels.whatsapp}</span>
+						<a class="siteFooter__valueLink" href={whatsappHref} target="_blank" rel="noreferrer">
+							{i18n.contact.whatsapp}
+						</a>
+					</li>
+				)}
+				{telegramHref && (
+					<li class="siteFooter__item">
+						<span class="muted siteFooter__label">{i18n.contact.labels.telegram}</span>
+						<a class="siteFooter__valueLink" href={telegramHref} target="_blank" rel="noreferrer">
+							{i18n.contact.telegram}
+						</a>
+					</li>
+				)}
+			</ul>
+		</div>
+	</div>
+
+	<div class="container siteFooter__bottom" aria-label="Credits">
+		<span class="muted">{i18n.footer.created}</span>
+		<a class="siteFooter__link" href="https://kashevarcode.com" target="_blank" rel="noreferrer">
+			{i18n.footer.brand}
+		</a>
+		<span class="muted">{year}</span>
+		<span class="muted siteFooter__sep">•</span>
+		<span class="muted">{i18n.brand.tagline}</span>
+	</div>
+</footer>
+
