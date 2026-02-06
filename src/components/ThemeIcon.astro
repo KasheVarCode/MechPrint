@@ -1,0 +1,32 @@
+---
+export type ThemeId = 'main' | 'cmyk' | 'noir' | 'kawaii';
+
+export interface Props {
+	theme: ThemeId;
+	size?: number;
+	class?: string;
+}
+
+const { theme } = Astro.props;
+const size = typeof Astro.props.size === 'number' ? Astro.props.size : 18;
+const className = Astro.props.class;
+
+const ICONS: Record<ThemeId, string> = {
+	main: '/icons/style/neon.webp',
+	cmyk: '/icons/style/cmyk.webp',
+	noir: '/icons/style/noir.webp',
+	kawaii: '/icons/style/kawaii.webp',
+};
+---
+
+<img
+	class:list={['theme-icon', className]}
+	src={ICONS[theme]}
+	width={size}
+	height={size}
+	alt=""
+	aria-hidden="true"
+	decoding="async"
+	loading="eager"
+/>
+

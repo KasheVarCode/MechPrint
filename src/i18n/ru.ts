@@ -17,9 +17,9 @@ export const ru = {
 	theme: {
 		ariaLabel: 'Тема оформления',
 		options: {
-			main: 'Main',
+			main: 'Neon Spark',
+			cmyk: 'CMYK',
 			noir: 'Noir',
-			motoko: 'Мотоко Кусанаги',
 			kawaii: 'Kawaii',
 		},
 	},
@@ -193,7 +193,7 @@ export const ru = {
 	},
 	vacancies: {
 		title: 'Вакансии',
-		subtitle: 'Cписок вакансий, условия и форма отклика.',
+		subtitle: 'Cписок вакансий.',
 		cta: 'Отправить резюме',
 		items: [
 			{ title: 'Сервис-инженер', text: 'Ремонт и обслуживание оргтехники на выездах.' },

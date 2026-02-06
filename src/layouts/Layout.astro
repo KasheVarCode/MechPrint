@@ -25,12 +25,13 @@ import SiteFooter from '../components/SiteFooter.astro';
 		<script is:inline>
 			(() => {
 				const STORAGE_KEY = 'mechprint.theme';
-				const THEMES = new Set(['main', 'noir', 'motoko', 'kawaii']);
+				const THEMES = new Set(['main', 'cmyk', 'noir', 'kawaii']);
 				const MIGRATE = new Map([
-					['neon', 'noir'],
-					['anime', 'motoko'],
+					['neon', 'main'],
+					['sakura', 'cmyk'],
+					['motoko', 'main'],
+					['anime', 'kawaii'],
 					['cats', 'kawaii'],
-					['noir', 'main'],
 				]);
 
 				const saved = localStorage.getItem(STORAGE_KEY);

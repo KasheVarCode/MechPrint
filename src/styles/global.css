@@ -130,6 +130,37 @@ a:hover {
 	box-shadow: var(--shadow-1);
 }
 
+/* CMYK: “ink button” with CMY rim (clean, not acid gradient) */
+html[data-theme='cmyk'] .btn-primary {
+	color: #ffffff;
+	border: 3px solid transparent;
+	background:
+		linear-gradient(180deg, rgba(17, 24, 39, 0.96), rgba(2, 6, 23, 0.96)) padding-box,
+		linear-gradient(
+				90deg,
+				rgba(6, 182, 212, 0.95),
+				rgba(236, 72, 153, 0.92),
+				rgba(250, 204, 21, 0.9)
+			)
+			border-box;
+	box-shadow:
+		0 16px 44px rgba(2, 6, 23, 0.22),
+		0 0 0 3px color-mix(in srgb, rgba(6, 182, 212, 0.35) 35%, transparent);
+}
+
+html[data-theme='cmyk'] .btn-primary:hover {
+	border: 2px solid transparent;
+	background:
+		linear-gradient(180deg, rgba(17, 24, 39, 0.92), rgba(2, 6, 23, 0.92)) padding-box,
+		linear-gradient(
+				90deg,
+				rgba(6, 182, 212, 0.95),
+				rgba(236, 72, 153, 0.92),
+				rgba(250, 204, 21, 0.9)
+			)
+			border-box;
+}
+
 .btn-ghost {
 	background: transparent;
 	border-color: var(--color-border);
@@ -148,6 +179,36 @@ a:hover {
 	background: color-mix(in srgb, var(--color-bg) 78%, transparent);
 	backdrop-filter: blur(14px);
 	border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+/* CMYK: color the whole navigation panel (topbar) */
+html[data-theme='cmyk'] .topbar {
+	background:
+		linear-gradient(
+			90deg,
+			rgba(6, 182, 212, 0.10) 0%,
+			rgba(236, 72, 153, 0.08) 55%,
+			rgba(250, 204, 21, 0.07) 100%
+		),
+		rgba(255, 255, 255, 0.86);
+	border-bottom-color: rgba(17, 24, 39, 0.12);
+}
+
+html[data-theme='cmyk'] .topbar::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 3px;
+	pointer-events: none;
+	background: linear-gradient(
+		90deg,
+		rgba(6, 182, 212, 0.95),
+		rgba(236, 72, 153, 0.92),
+		rgba(250, 204, 21, 0.9)
+	);
+	opacity: 0.75;
 }
 
 .topbar__inner {
@@ -211,9 +272,33 @@ a:hover {
 	text-decoration: none;
 }
 
+/* CMYK: navigation should look like clean paper UI */
+html[data-theme='cmyk'] .topnav__link {
+	background: rgba(255, 255, 255, 0.88);
+	border-color: rgba(17, 24, 39, 0.12);
+	box-shadow: 0 14px 30px rgba(2, 6, 23, 0.06);
+}
+
+/* Kawaii: keep soft pink nav */
+html[data-theme='kawaii'] .topnav__link {
+	background: color-mix(in srgb, var(--color-primary) 16%, rgba(255, 255, 255, 0.9));
+	border-color: color-mix(in srgb, var(--color-primary) 22%, var(--color-border));
+	box-shadow: 0 14px 30px color-mix(in srgb, var(--color-primary) 22%, transparent);
+}
+
 .topnav__link:hover {
 	text-decoration: none;
 	border-color: color-mix(in srgb, var(--color-primary) 22%, var(--color-border));
+}
+
+html[data-theme='cmyk'] .topnav__link:hover {
+	background: rgba(255, 255, 255, 0.94);
+	border-color: color-mix(in srgb, var(--color-primary) 18%, rgba(17, 24, 39, 0.12));
+}
+
+html[data-theme='kawaii'] .topnav__link:hover {
+	background: color-mix(in srgb, var(--color-primary) 22%, rgba(255, 255, 255, 0.92));
+	border-color: color-mix(in srgb, var(--color-primary) 32%, var(--color-border));
 }
 
 .topnav__link:focus-visible {
@@ -381,7 +466,18 @@ a:hover {
 	left: 0;
 	bottom: 0;
 	width: 90%;
-	background: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+	background: linear-gradient(to right, var(--hero-overlay-noise) 0%, var(--hero-overlay-noise-0) 100%);
+}
+
+:root {
+	--hero-overlay-noise: rgba(0, 0, 0, 1);
+	--hero-overlay-noise-0: rgba(0, 0, 0, 0);
+}
+
+html[data-theme='cmyk'],
+html[data-theme='kawaii'] {
+	--hero-overlay-noise: rgba(255, 255, 255, 1);
+	--hero-overlay-noise-0: rgba(255, 255, 255, 0);
 }
 
 .hero__grid {
@@ -747,7 +843,7 @@ a:hover {
 /* B2B: подменяем “заглушки” реальными картинками брендов */
 .split--b2b .rotator__frame--one {
 	background-image:
-		url('/icons/B2B/Kyocera.webp'),
+		url('/icons/b2b/Kyocera.webp'),
 		radial-gradient(800px 520px at 22% 22%, rgba(34, 211, 238, 0.18), transparent 58%),
 		linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
 	background-repeat: no-repeat, no-repeat, no-repeat;
@@ -757,7 +853,7 @@ a:hover {
 
 .split--b2b .rotator__frame--two {
 	background-image:
-		url('/icons/B2B/Ricoh.webp'),
+		url('/icons/b2b/Ricoh.webp'),
 		radial-gradient(900px 600px at 72% 28%, rgba(124, 58, 237, 0.18), transparent 60%),
 		linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
 	background-repeat: no-repeat, no-repeat, no-repeat;
@@ -767,7 +863,7 @@ a:hover {
 
 .split--b2b .rotator__frame--three {
 	background-image:
-		url('/icons/B2B/Xerox.webp'),
+		url('/icons/b2b/Xerox.webp'),
 		radial-gradient(900px 600px at 52% 32%, rgba(236, 72, 153, 0.15), transparent 62%),
 		linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012));
 	background-repeat: no-repeat, no-repeat, no-repeat;
@@ -978,6 +1074,11 @@ a:hover {
 	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
 }
 
+html[data-theme='cmyk'] .billingToggle__btn[aria-pressed='true'] {
+	background: rgba(17, 24, 39, 0.08);
+	box-shadow: 0 10px 24px rgba(2, 6, 23, 0.08);
+}
+
 .pricing[data-billing='month'] [data-price='year'] {
 	display: none;
 }
@@ -1169,6 +1270,45 @@ a:hover {
 @media (prefers-reduced-motion: reduce) {
 	.hero__video {
 		display: none;
+	}
+}
+
+/* Custom cursors per theme (desktop only).
+   Default: system cursors. Theme may override variables with url(...). */
+:root {
+	--cursor-auto: auto;
+	--cursor-pointer: pointer;
+	--cursor-text: text;
+}
+
+html[data-theme='kawaii'] {
+	--cursor-auto: url('/icons/Kawaii1.cur'), auto;
+	--cursor-pointer: url('/icons/Kawaii2.cur'), pointer;
+}
+
+@media (pointer: fine) {
+	html {
+		cursor: var(--cursor-auto);
+	}
+
+	a,
+	button,
+	summary,
+	[role='button'],
+	.btn,
+	.topnav__link,
+	.theme-select__trigger,
+	.theme-select__option,
+	.billingToggle__btn,
+	input[type='button'],
+	input[type='submit'] {
+		cursor: var(--cursor-pointer);
+	}
+
+	input,
+	textarea,
+	[contenteditable='true'] {
+		cursor: var(--cursor-text);
 	}
 }
 

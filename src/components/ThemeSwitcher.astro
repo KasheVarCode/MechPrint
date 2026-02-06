@@ -1,74 +1,93 @@
 ---
 import { ru as i18n } from '../i18n/ru';
+import ThemeIcon from './ThemeIcon.astro';
 
-type ThemeId = 'main' | 'noir' | 'motoko' | 'kawaii';
+import type { ThemeId } from './ThemeIcon.astro';
 
 const THEMES: Array<{ id: ThemeId; label: string }> = [
 	{ id: 'main', label: i18n.theme.options.main },
+	{ id: 'cmyk', label: i18n.theme.options.cmyk },
 	{ id: 'noir', label: i18n.theme.options.noir },
-	{ id: 'motoko', label: i18n.theme.options.motoko },
 	{ id: 'kawaii', label: i18n.theme.options.kawaii },
 ];
 ---
 
-<div class="theme-toggle" role="group" aria-label={i18n.theme.ariaLabel}>
-	{THEMES.map((t) => (
-		<button
-			class="theme-toggle__btn"
-			type="button"
-			data-theme={t.id}
-			aria-label={t.label}
-			aria-pressed="false"
-		>
-			{t.id === 'main' && (
-				<svg viewBox="0 0 24 24" aria-hidden="true">
-					<path
-						fill="currentColor"
-						d="M12 2l1.4 4.6L18 8l-4.6 1.4L12 14l-1.4-4.6L6 8l4.6-1.4L12 2Zm7 9l.9 2.9L23 15l-3.1 1.1L19 19l-1.1-2.9L15 15l2.9-1.1L19 11Z"
-					/>
-				</svg>
-			)}
-			{t.id === 'noir' && (
-				<svg viewBox="0 0 24 24" aria-hidden="true">
-					<path
-						fill="currentColor"
-						d="M12 3c2.6 0 4.9 1.1 6.6 2.8C20.3 7.5 21.4 9.8 21.4 12s-1.1 4.5-2.8 6.2C16.9 19.9 14.6 21 12 21c-2.6 0-4.9-1.1-6.6-2.8C3.7 16.5 2.6 14.2 2.6 12s1.1-4.5 2.8-6.2C7.1 4.1 9.4 3 12 3Zm0 2.2v13.6c1.9-.2 3.6-1.1 4.9-2.4 1.4-1.4 2.3-3.2 2.3-4.4s-.9-3-2.3-4.4c-1.3-1.3-3-2.2-4.9-2.4Z"
-					/>
-				</svg>
-			)}
-			{t.id === 'motoko' && (
-				<svg viewBox="0 0 24 24" aria-hidden="true">
-					<path
-						fill="currentColor"
-						d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z"
-					/>
-				</svg>
-			)}
-			{t.id === 'kawaii' && (
-				<svg viewBox="0 0 24 24" aria-hidden="true">
-					<path
-						fill="currentColor"
-						d="M12 21s-7-4.6-9.5-8.5C.7 9.5 2.1 6.7 5 6.2c1.7-.3 3.4.4 4.4 1.7 1-1.3 2.7-2 4.4-1.7 2.9.5 4.3 3.3 2.5 6.3C19 16.4 12 21 12 21Z"
-					/>
-				</svg>
-			)}
-		</button>
-	))}
-</div>
+<details class="theme-select" data-theme-switcher>
+	<summary class="theme-select__trigger" aria-label={i18n.theme.ariaLabel}>
+		<span class="theme-select__current">
+			<span class="theme-select__currentIcon" aria-hidden="true">
+				{THEMES.map((t) => (
+					<span
+						class="theme-select__swatch theme-select__currentIconItem"
+						data-theme-current-icon={t.id}
+						data-theme-swatch={t.id}
+						hidden={t.id !== 'main'}
+					>
+						<ThemeIcon theme={t.id} size={40} />
+					</span>
+				))}
+			</span>
+
+			<span class="theme-select__currentLabel">
+				{THEMES.map((t) => (
+					<span
+						class="theme-select__currentLabelItem"
+						data-theme-current-label={t.id}
+						hidden={t.id !== 'main'}
+					>
+						{t.label}
+					</span>
+				))}
+			</span>
+		</span>
+
+		<svg class="theme-select__chevron" viewBox="0 0 24 24" aria-hidden="true">
+			<path fill="currentColor" d="M7 10l5 5 5-5" />
+		</svg>
+	</summary>
+
+	<div class="theme-select__panel" role="group" aria-label={i18n.theme.ariaLabel}>
+		{THEMES.map((t) => (
+			<button
+				class="theme-select__option"
+				type="button"
+				data-theme={t.id}
+				aria-label={t.label}
+				aria-pressed="false"
+			>
+				<span class="theme-select__swatch" data-theme-swatch={t.id} aria-hidden="true">
+					<ThemeIcon theme={t.id} size={40} />
+				</span>
+				<span class="theme-select__optionLabel">{t.label}</span>
+			</button>
+		))}
+	</div>
+</details>
 
 <script is:inline>
 	(() => {
 		const STORAGE_KEY = 'mechprint.theme';
-		const THEMES = new Set(['main', 'noir', 'motoko', 'kawaii']);
+		const THEMES = new Set(['main', 'cmyk', 'noir', 'kawaii']);
 		const MIGRATE = new Map([
 			['neon', 'main'],
-			['anime', 'motoko'],
+			['sakura', 'cmyk'],
+			['motoko', 'main'],
+			['anime', 'kawaii'],
 			['cats', 'kawaii'],
-			['noir', 'main'],
 		]);
 
 		const root = document.documentElement;
-		const buttons = Array.from(document.querySelectorAll('[data-theme]')).filter(
+		const scope = document.currentScript?.closest('[data-theme-switcher]') ?? document;
+		const details = scope instanceof HTMLDetailsElement ? scope : null;
+
+		const currentIcons = Array.from(scope.querySelectorAll('[data-theme-current-icon]')).filter(
+			(el) => el instanceof HTMLElement
+		);
+		const currentLabels = Array.from(scope.querySelectorAll('[data-theme-current-label]')).filter(
+			(el) => el instanceof HTMLElement
+		);
+
+		const buttons = Array.from(scope.querySelectorAll('button[data-theme]')).filter(
 			(el) => el instanceof HTMLButtonElement
 		);
 		if (buttons.length === 0) return;
@@ -88,10 +107,24 @@ const THEMES: Array<{ id: ThemeId; label: string }> = [
 			}
 		};
 
+		const setCurrent = (next) => {
+			for (const el of currentIcons) {
+				const theme = el.getAttribute('data-theme-current-icon');
+				const isActive = theme === next;
+				el.toggleAttribute('hidden', !isActive);
+			}
+			for (const el of currentLabels) {
+				const theme = el.getAttribute('data-theme-current-label');
+				const isActive = theme === next;
+				el.toggleAttribute('hidden', !isActive);
+			}
+		};
+
 		const saved = normalize(localStorage.getItem(STORAGE_KEY));
 		const initial = normalize(root.dataset.theme) || saved || 'main';
 		root.dataset.theme = initial;
 		setActive(initial);
+		setCurrent(initial);
 
 		for (const b of buttons) {
 			b.addEventListener('click', () => {
@@ -99,85 +132,193 @@ const THEMES: Array<{ id: ThemeId; label: string }> = [
 				if (!next) return;
 				root.dataset.theme = next;
 				setActive(next);
+				setCurrent(next);
 				localStorage.setItem(STORAGE_KEY, next);
+				if (details) details.open = false;
+			});
+		}
+
+		if (details) {
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') details.open = false;
+			});
+			document.addEventListener('click', (e) => {
+				if (!details.open) return;
+				const target = e.target instanceof Node ? e.target : null;
+				if (target && !details.contains(target)) details.open = false;
 			});
 		}
 	})();
 </script>
 
 <style>
-	.theme-toggle {
-		display: flex;
-		align-items: center;
-		gap: 8px;
+	.theme-select {
+		position: relative;
 	}
 
-	.theme-toggle__btn {
+	.theme-select__trigger {
+		height: 46px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 10px;
+		padding: 8px 12px;
+		border-radius: 999px;
+		border: 1px solid var(--color-border);
+		background: var(--color-surface);
+		color: var(--color-text);
+		cursor: pointer;
+		user-select: none;
+		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+	}
+
+	.theme-select__trigger::-webkit-details-marker {
+		display: none;
+	}
+
+	.theme-select__trigger::marker {
+		content: '';
+	}
+
+	.theme-select__current {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		min-width: 0;
+	}
+
+	.theme-select__currentIcon {
+		width: 40px;
+		height: 40px;
+		display: grid;
+		place-items: center;
+		position: relative;
+	}
+
+	.theme-select__currentIcon .theme-select__currentIconItem {
+		grid-area: 1 / 1;
+	}
+
+	.theme-select__currentLabel {
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-size: 14px;
+		line-height: 1;
+		letter-spacing: 0.2px;
+		white-space: nowrap;
+	}
+
+	.theme-select__chevron {
+		width: 18px;
+		height: 18px;
+		opacity: 0.7;
+	}
+
+	.theme-select[open] .theme-select__chevron {
+		transform: rotate(180deg);
+	}
+
+	.theme-select__panel {
+		position: absolute;
+		top: calc(100% + 10px);
+		right: 0;
+		min-width: 220px;
+		padding: 10px;
+		/* максимально “мягкая” форма */
+		border-radius: calc(var(--radius-3) + 10px);
+		border: 1px solid var(--color-border);
+		background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+		backdrop-filter: blur(10px);
+		box-shadow: var(--shadow-2);
+		display: grid;
+		gap: 8px;
+		z-index: 50;
+	}
+
+	.theme-select__option {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px 10px;
+		/* “пилюля” — почти круг */
+		border-radius: 999px;
+		border: 1px solid transparent;
+		background: transparent;
+		color: var(--color-text);
+		cursor: pointer;
+		text-align: left;
+	}
+
+	.theme-select__option:hover {
+		background: color-mix(in srgb, var(--color-surface-2) 80%, transparent);
+	}
+
+	.theme-select__option[aria-pressed='true'] {
+		border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+		background: color-mix(in srgb, var(--color-surface-2) 85%, transparent);
+	}
+
+	.theme-select__swatch {
 		width: 40px;
 		height: 40px;
 		border-radius: 999px;
-		border: 1px solid var(--color-border);
-		cursor: pointer;
+		/* Небольшая компенсация — ассеты визуально “тяжелее” вниз/вправо */
+		--icon-nudge-x: -1px;
+		--icon-nudge-y: -1px;
 		display: grid;
 		place-items: center;
-		color: rgba(255, 255, 255, 0.92);
-		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
-		background: var(--color-surface);
+		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+		border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
 		position: relative;
 		isolation: isolate;
+		overflow: hidden;
+		/* icons are already “styled”, so keep swatch neutral */
+		background: color-mix(in srgb, var(--color-surface) 78%, transparent);
 	}
 
-	.theme-toggle__btn svg {
-		width: 18px;
-		height: 18px;
-		opacity: 0.95;
-		filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
-	}
-
-	.theme-toggle__btn[data-theme='main'] {
-		background: linear-gradient(135deg, rgba(34, 211, 238, 0.95), rgba(96, 165, 250, 0.95));
-	}
-
-	.theme-toggle__btn[data-theme='noir'] {
-		color: rgba(245, 245, 245, 0.95);
-		background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(120, 120, 120, 0.55));
-	}
-
-	.theme-toggle__btn[data-theme='motoko'] {
-		background: linear-gradient(135deg, rgba(0, 255, 209, 0.95), rgba(163, 255, 18, 0.85));
-	}
-
-	.theme-toggle__btn[data-theme='motoko']::after {
-		content: '';
-		position: absolute;
-		inset: 0;
+	.theme-select__swatch .theme-icon {
+		display: block;
+		width: 100%;
+		height: 100%;
 		border-radius: inherit;
-		background: repeating-linear-gradient(
-			180deg,
-			rgba(0, 0, 0, 0.16) 0px,
-			rgba(0, 0, 0, 0.16) 1px,
-			transparent 1px,
-			transparent 4px
-		);
-		opacity: 0.35;
-		z-index: -1;
+		object-fit: cover;
+		transform: translate(var(--icon-nudge-x), var(--icon-nudge-y));
+		opacity: 0.98;
+		filter: none;
 	}
 
-	.theme-toggle__btn[data-theme='kawaii'] {
-		color: rgba(17, 24, 39, 0.92);
-		background: linear-gradient(135deg, rgba(251, 113, 133, 0.95), rgba(34, 197, 94, 0.75));
+	/* Light themes: keep swatch “paper” and softer shadow */
+	html[data-theme='cmyk'] .theme-select__swatch,
+	html[data-theme='kawaii'] .theme-select__swatch {
+		background: rgba(255, 255, 255, 0.92);
+		box-shadow: 0 10px 28px rgba(2, 6, 23, 0.08);
 	}
 
-	.theme-toggle__btn[aria-pressed='true'] {
-		transform: translateY(-1px);
-		box-shadow:
-			0 14px 34px rgba(0, 0, 0, 0.28),
-			0 0 0 3px color-mix(in srgb, var(--color-primary) 35%, transparent);
+	.theme-select__optionLabel {
+		font-size: 14px;
+		line-height: 1.2;
 	}
 
-	.theme-toggle__btn:focus-visible {
+	.theme-select__trigger:focus-visible,
+	.theme-select__option:focus-visible {
 		outline: 3px solid var(--color-focus);
 		outline-offset: 3px;
+	}
+
+	@media (max-width: 520px) {
+		.theme-select__panel {
+			right: 0;
+			min-width: min(260px, calc(100vw - 24px));
+		}
+	}
+
+	/* Desktop: фиксируем ширину, чтобы центр навигации не прыгал от длины названия */
+	@media (min-width: 900px) {
+		.theme-select__trigger {
+			inline-size: 220px;
+		}
 	}
 </style>
 
