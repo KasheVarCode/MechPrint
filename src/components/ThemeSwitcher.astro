@@ -156,6 +156,12 @@ const THEMES: Array<{ id: ThemeId; label: string }> = [
 		position: relative;
 	}
 
+	/* Важно: у нас у свотча задан display, и он перебивает UA-правило [hidden].
+	   Поэтому принудительно скрываем элементы с hidden. */
+	.theme-select [hidden] {
+		display: none !important;
+	}
+
 	.theme-select__trigger {
 		height: 46px;
 		display: inline-flex;
@@ -263,28 +269,23 @@ const THEMES: Array<{ id: ThemeId; label: string }> = [
 	.theme-select__swatch {
 		width: 40px;
 		height: 40px;
-		border-radius: 999px;
-		/* Небольшая компенсация — ассеты визуально “тяжелее” вниз/вправо */
-		--icon-nudge-x: -1px;
-		--icon-nudge-y: -1px;
 		display: grid;
 		place-items: center;
-		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
-		border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+		border: 0;
+		box-shadow: none;
 		position: relative;
-		isolation: isolate;
+		border-radius: 18px;
 		overflow: hidden;
-		/* icons are already “styled”, so keep swatch neutral */
-		background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+		background: transparent;
 	}
 
 	.theme-select__swatch .theme-icon {
 		display: block;
 		width: 100%;
 		height: 100%;
-		border-radius: inherit;
-		object-fit: cover;
-		transform: translate(var(--icon-nudge-x), var(--icon-nudge-y));
+		border-radius: 0;
+		object-fit: contain;
+		object-position: 50% 50%;
 		opacity: 0.98;
 		filter: none;
 	}
@@ -292,8 +293,8 @@ const THEMES: Array<{ id: ThemeId; label: string }> = [
 	/* Light themes: keep swatch “paper” and softer shadow */
 	html[data-theme='cmyk'] .theme-select__swatch,
 	html[data-theme='kawaii'] .theme-select__swatch {
-		background: rgba(255, 255, 255, 0.92);
-		box-shadow: 0 10px 28px rgba(2, 6, 23, 0.08);
+		background: transparent;
+		box-shadow: none;
 	}
 
 	.theme-select__optionLabel {
