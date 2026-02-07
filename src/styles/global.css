@@ -1555,6 +1555,17 @@ html[data-theme='cmyk'] .billingToggle__btn[aria-pressed='true'] {
 		gap: 6px;
 	}
 
+	/* Контакты: у нас есть более специфичное правило `.contactGrid .siteFooter__item`,
+	   поэтому на mobile переопределяем его явно, иначе остаются 2 колонки. */
+	.contactGrid {
+		grid-template-columns: 1fr;
+	}
+
+	.contactGrid .siteFooter__item {
+		grid-template-columns: 1fr;
+		gap: 6px;
+	}
+
 	.siteFooter__label {
 		text-align: left;
 	}
@@ -1601,8 +1612,8 @@ html[data-theme='cmyk'] .billingToggle__btn[aria-pressed='true'] {
 }
 
 html[data-theme='kawaii'] {
-	--cursor-auto: url('/icons/Kawaii1.cur'), auto;
-	--cursor-pointer: url('/icons/Kawaii2.cur'), pointer;
+	--cursor-auto: url('/icons/kawaii1.cur'), auto;
+	--cursor-pointer: url('/icons/kawaii2.cur'), pointer;
 }
 
 @media (pointer: fine) {
