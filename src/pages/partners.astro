@@ -12,9 +12,8 @@ import { ru as i18n } from '../i18n/ru';
 			</div>
 
 			<div class="card card--padded">
-				<div class="muted" style="margin-bottom: 10px;">{i18n.partners.intro.title}</div>
-				{i18n.partners.intro.paragraphs.map((p) => (
-					<p style="margin: 10px 0 0 0;">{p}</p>
+				{i18n.partners.intro.paragraphs.map((p, idx) => (
+					<p style={idx === 0 ? 'margin: 0;' : 'margin: 10px 0 0 0;'}>{p}</p>
 				))}
 			</div>
 
@@ -31,11 +30,7 @@ import { ru as i18n } from '../i18n/ru';
 
 			<div class="card card--padded" style="margin-top: 14px;">
 				<strong>{i18n.partners.interaction.title}</strong>
-				<ul class="list" style="margin-top: 10px;">
-					{i18n.partners.interaction.points.map((t) => (
-						<li>{t}</li>
-					))}
-				</ul>
+				<p class="muted" style="margin: 10px 0 0 0;">{i18n.partners.interaction.text}</p>
 			</div>
 
 			<div class="featureGrid" style="margin-top: 14px;">
@@ -44,12 +39,7 @@ import { ru as i18n } from '../i18n/ru';
 						<div class="muted" style="font-weight: 900;">{role.key}</div>
 						<strong class="featureCard__title" style="margin-top: 6px;">{role.title}</strong>
 						<div class="muted featureCard__text" style="margin-top: 10px;">
-							<strong style="color: var(--color-text);">{role.formatTitle}</strong>
-							<ul class="list" style="margin-top: 8px;">
-								{role.points.map((t) => (
-									<li>{t}</li>
-								))}
-							</ul>
+							<p style="margin: 0;">{role.text}</p>
 						</div>
 					</article>
 				))}
@@ -57,13 +47,7 @@ import { ru as i18n } from '../i18n/ru';
 
 			<div class="card card--padded" style="margin-top: 14px;">
 				<strong>{i18n.partners.approach.title}</strong>
-				<p class="muted" style="margin: 10px 0 0 0;">{i18n.partners.approach.lead}</p>
-				<ul class="list" style="margin-top: 8px;">
-					{i18n.partners.approach.points.map((t) => (
-						<li>{t}</li>
-					))}
-				</ul>
-				<p style="margin: 10px 0 0 0;">{i18n.partners.approach.conclusion}</p>
+				<p class="muted" style="margin: 10px 0 0 0;">{i18n.partners.approach.text}</p>
 			</div>
 
 			<div class="card card--padded" style="margin-top: 14px;">
