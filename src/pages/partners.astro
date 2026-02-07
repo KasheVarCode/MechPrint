@@ -3,16 +3,16 @@ import Layout from '../layouts/Layout.astro';
 import { ru as i18n } from '../i18n/ru';
 ---
 
-<Layout title={`Вакансии — ${i18n.brand.name}`}>
+<Layout title={`Партнёрам — ${i18n.brand.name}`}>
 	<main>
-		<section class="container section" id="vacancies">
+		<section class="container section" id="partners">
 			<div class="sectionHead">
-				<h1 class="sectionTitle">{i18n.vacancies.title}</h1>
-				<p class="muted sectionSubtitle">{i18n.vacancies.subtitle}</p>
+				<h1 class="sectionTitle">{i18n.partners.title}</h1>
+				<p class="muted sectionSubtitle">{i18n.partners.subtitle}</p>
 			</div>
 
 			<div class="featureGrid">
-				{i18n.vacancies.items.map((v) => (
+				{i18n.partners.items.map((v) => (
 					<article class="featureCard card">
 						<strong class="featureCard__title">{v.title}</strong>
 						<div class="muted featureCard__text">{v.text}</div>
@@ -21,7 +21,7 @@ import { ru as i18n } from '../i18n/ru';
 			</div>
 
 			<div style="margin-top: 18px;">
-				<a class="btn btn-primary" href="/#contact">{i18n.vacancies.cta}</a>
+				<a class="btn btn-primary" href="/#contact">{i18n.partners.cta}</a>
 			</div>
 		</section>
 	</main>

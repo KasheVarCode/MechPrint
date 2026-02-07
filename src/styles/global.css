@@ -694,6 +694,11 @@ html[data-theme='kawaii'] {
 	line-height: 1.55;
 }
 
+.hero__leadList {
+	margin: 0;
+	padding: 0;
+}
+
 .hero__aside {
 	padding: 16px;
 }

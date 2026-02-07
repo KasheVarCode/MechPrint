@@ -34,7 +34,14 @@ import { ru as i18n } from '../i18n/ru';
 						{i18n.cta.cabinet}
 					</a>
 				</div>
-				<p class="muted hero__lead"><NlText text={i18n.hero.subtitle1} /></p>
+				<ul class="checkList hero__leadList" aria-label="Возможности">
+					{i18n.hero.points.map((t) => (
+						<li class="checkList__item">
+							<span class="checkList__icon" aria-hidden="true">✓</span>
+							<span class="muted checkList__text"><NlText text={t} /></span>
+						</li>
+					))}
+				</ul>
 			</div>
 		</div>
 	</section>
