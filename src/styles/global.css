@@ -1065,7 +1065,7 @@ html[data-theme='kawaii'] {
 /* B2B: подменяем “заглушки” реальными картинками брендов */
 .split--b2b .rotator__frame--one {
 	background-image:
-		url('/icons/b2b/Kyocera.webp'),
+		var(--b2b-brand-1, url('/icons/b2b/Kyocera.webp')),
 		radial-gradient(800px 520px at 22% 22%, rgba(34, 211, 238, 0.18), transparent 58%),
 		linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
 	background-repeat: no-repeat, no-repeat, no-repeat;
@@ -1075,7 +1075,7 @@ html[data-theme='kawaii'] {
 
 .split--b2b .rotator__frame--two {
 	background-image:
-		url('/icons/b2b/Ricoh.webp'),
+		var(--b2b-brand-2, url('/icons/b2b/Ricoh.webp')),
 		radial-gradient(900px 600px at 72% 28%, rgba(124, 58, 237, 0.18), transparent 60%),
 		linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
 	background-repeat: no-repeat, no-repeat, no-repeat;
@@ -1085,7 +1085,7 @@ html[data-theme='kawaii'] {
 
 .split--b2b .rotator__frame--three {
 	background-image:
-		url('/icons/b2b/Xerox.webp'),
+		var(--b2b-brand-3, url('/icons/b2b/Xerox.webp')),
 		radial-gradient(900px 600px at 52% 32%, rgba(236, 72, 153, 0.15), transparent 62%),
 		linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012));
 	background-repeat: no-repeat, no-repeat, no-repeat;

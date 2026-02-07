@@ -1,10 +1,18 @@
 ---
 import NlText from './NlText.astro';
 import { ru as i18n } from '../i18n/ru';
+
+const base = import.meta.env.BASE_URL;
+const b2bBrand1 = `url('${base}icons/b2b/Kyocera.webp')`;
+const b2bBrand2 = `url('${base}icons/b2b/Ricoh.webp')`;
+const b2bBrand3 = `url('${base}icons/b2b/Xerox.webp')`;
 ---
 
 <section class="container section" id="b2b">
-	<div class="split split--b2b card">
+	<div
+		class="split split--b2b card"
+		style={`--b2b-brand-1: ${b2bBrand1}; --b2b-brand-2: ${b2bBrand2}; --b2b-brand-3: ${b2bBrand3};`}
+	>
 		<div class="split__media" aria-hidden="true">
 			<div class="rotator">
 				<div class="rotator__frame rotator__frame--one"></div>
