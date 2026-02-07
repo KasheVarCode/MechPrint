@@ -1,11 +1,12 @@
 ---
+import NlText from './NlText.astro';
 import { ru as i18n } from '../i18n/ru';
 ---
 
 <section class="container section" id="api">
 	<div class="sectionHead">
 		<h2 class="sectionTitle">{i18n.api.title}</h2>
-		<p class="muted sectionSubtitle">{i18n.api.subtitle}</p>
+		<p class="muted sectionSubtitle"><NlText text={i18n.api.subtitle} /></p>
 	</div>
 
 	<div class="apiGrid card">
@@ -39,6 +40,51 @@ import { ru as i18n } from '../i18n/ru';
 					<li class="miniList__item">{n}</li>
 				))}
 			</ul>
+		</div>
+	</div>
+
+	<div class="apiBlock">
+		<h3 class="apiBlock__title">{i18n.api.quickStart.title}</h3>
+		<div class="stepsGrid">
+			{i18n.api.quickStart.steps.map((s, idx) => (
+				<div class="stepCard card">
+					<div class="stepCard__badge" aria-hidden="true">{idx + 1}</div>
+					<div class="stepCard__title">{s.title}</div>
+					<div class="muted stepCard__text">{s.text}</div>
+				</div>
+			))}
+		</div>
+	</div>
+
+	<div class="apiDocs">
+		<div class="apiPanel apiDocCard">
+			<div class="apiPanel__head">
+				<strong class="apiPanel__title">{i18n.api.auth.title}</strong>
+				<div class="muted apiPanel__hint">{i18n.api.auth.lead}</div>
+			</div>
+			<ul class="miniList">
+				{i18n.api.auth.points.map((p) => (
+					<li class="miniList__item">{p}</li>
+				))}
+			</ul>
+		</div>
+
+		<div class="apiPanel apiDocCard">
+			<div class="apiPanel__head">
+				<strong class="apiPanel__title">{i18n.api.scopes.title}</strong>
+				<div class="muted apiPanel__hint">{i18n.api.scopes.lead}</div>
+			</div>
+
+			<div class="apiSubTitle">{i18n.api.scopes.examplesTitle}</div>
+			<ul class="apiBadgeList" aria-label={i18n.api.scopes.examplesTitle}>
+				{i18n.api.scopes.examples.map((s) => (
+					<li class="apiBadgeItem">
+						<code class="apiBadge">{s}</code>
+					</li>
+				))}
+			</ul>
+
+			<div class="muted apiCallout">{i18n.api.scopes.principle}</div>
 		</div>
 	</div>
 </section>

@@ -9,6 +9,24 @@
 :root {
 	/* Offset for anchor jumps under sticky topbar */
 	--topbar-offset: calc(92px + env(safe-area-inset-top, 0px));
+
+	/* Mobile nav overlay (defaults: dark fog) */
+	--mobile-nav-overlay-bg: rgba(2, 6, 23, 0.85);
+	--mobile-nav-noise-opacity: 0.08;
+}
+
+@media (max-width: 900px) {
+	:root {
+		/* Mobile topbar is more compact */
+		--topbar-offset: calc(74px + env(safe-area-inset-top, 0px));
+	}
+}
+
+/* Light themes: white fog */
+html[data-theme='cmyk'],
+html[data-theme='kawaii'] {
+	--mobile-nav-overlay-bg: rgba(255, 255, 255, 0.88);
+	--mobile-nav-noise-opacity: 0.06;
 }
 
 html,
@@ -220,6 +238,157 @@ html[data-theme='cmyk'] .topbar::after {
 
 .topbar__right {
 	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.navToggle {
+	display: none;
+	width: 44px;
+	height: 44px;
+	border-radius: 999px;
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background: color-mix(in srgb, var(--color-surface) 65%, transparent);
+	backdrop-filter: blur(12px);
+	color: var(--color-text);
+	cursor: pointer;
+}
+
+.navToggle__icon {
+	position: relative;
+	width: 18px;
+	height: 12px;
+	display: inline-block;
+}
+
+.navToggle__icon::before,
+.navToggle__icon::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 2px;
+	border-radius: 999px;
+	background: currentColor;
+}
+
+.navToggle__icon::before {
+	top: 0;
+	box-shadow: 0 5px 0 currentColor;
+}
+
+.navToggle__icon::after {
+	bottom: 0;
+}
+
+.mobileNavOverlay {
+	display: none;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: var(--topbar-offset);
+	height: calc(100svh - var(--topbar-offset));
+	height: calc(100dvh - var(--topbar-offset));
+	bottom: auto;
+	padding: 12px;
+	background: var(--mobile-nav-overlay-bg);
+	backdrop-filter: blur(26px) saturate(1.08);
+	isolation: isolate;
+	overflow: hidden;
+	z-index: 25;
+}
+
+.mobileNavOverlay::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	opacity: var(--mobile-nav-noise-opacity);
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+	mix-blend-mode: overlay;
+}
+
+html.is-mobile-nav-open .mobileNavOverlay {
+	display: grid;
+	align-items: start;
+}
+
+html.is-mobile-nav-open,
+html.is-mobile-nav-open body {
+	overflow: hidden;
+}
+
+@media (max-width: 900px) {
+	html.is-theme-open,
+	html.is-theme-open body {
+		overflow: hidden;
+	}
+}
+
+.mobileNavSheet {
+	width: 100%;
+	max-width: 720px;
+	margin-inline: auto;
+	padding: 14px;
+	position: relative;
+	z-index: 1;
+	max-height: calc(100svh - var(--topbar-offset) - 24px);
+	max-height: calc(100dvh - var(--topbar-offset) - 24px);
+	overflow: auto;
+}
+
+.mobileNavHead {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+.mobileNavTitle {
+	font-weight: 900;
+	letter-spacing: -0.02em;
+}
+
+.mobileNavClose {
+	width: 40px;
+	height: 40px;
+	border-radius: 999px;
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background: color-mix(in srgb, var(--color-surface) 65%, transparent);
+	backdrop-filter: blur(12px);
+	color: var(--color-text);
+	font-size: 22px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.mobileNavList {
+	list-style: none;
+	padding: 12px 0 0 0;
+	margin: 0;
+	display: grid;
+	gap: 10px;
+}
+
+.mobileNavLink {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 14px;
+	border-radius: 16px;
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background: color-mix(in srgb, var(--color-bg) 62%, transparent);
+	font-weight: 900;
+	letter-spacing: -0.02em;
+	text-decoration: none;
+}
+
+.mobileNavLink:hover {
+	text-decoration: none;
+	border-color: color-mix(in srgb, var(--color-primary) 22%, var(--color-border));
 }
 
 .brand {
@@ -1007,6 +1176,67 @@ html[data-theme='kawaii'] {
 	line-height: 1.45;
 }
 
+.apiBlock {
+	margin-top: 18px;
+}
+
+.apiBlock__title {
+	margin: 0 0 12px 0;
+	font-size: clamp(18px, 2vw, 24px);
+	letter-spacing: -0.02em;
+}
+
+.apiDocs {
+	margin-top: 14px;
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	gap: 14px;
+}
+
+.apiDocCard {
+	grid-column: span 6;
+}
+
+.apiSubTitle {
+	font-weight: 900;
+	letter-spacing: -0.02em;
+	margin-top: 4px;
+}
+
+.apiCallout {
+	margin-top: 10px;
+	padding: 12px 12px;
+	border-radius: 14px;
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background: color-mix(in srgb, var(--color-bg) 62%, transparent);
+	line-height: 1.45;
+}
+
+.apiBadgeList {
+	list-style: none;
+	padding: 0;
+	margin: 8px 0 0 0;
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.apiBadgeItem {
+	margin: 0;
+}
+
+.apiBadge {
+	display: inline-flex;
+	align-items: center;
+	padding: 6px 10px;
+	border-radius: 999px;
+	font-weight: 900;
+	font-size: 12px;
+	letter-spacing: -0.01em;
+	border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+	background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
 .stepCard {
 	grid-column: span 4;
 	padding: 16px;
@@ -1208,6 +1438,10 @@ html[data-theme='cmyk'] .billingToggle__btn[aria-pressed='true'] {
 	.apiGrid {
 		grid-template-columns: 1fr;
 	}
+
+	.apiDocCard {
+		grid-column: span 12;
+	}
 }
 
 @media (max-width: 560px) {
@@ -1225,9 +1459,37 @@ html[data-theme='cmyk'] .billingToggle__btn[aria-pressed='true'] {
 		justify-content: flex-start;
 	}
 
-	/* Mobile: навигационные кнопки пока не показываем */
-	.topnav {
+	/* Mobile: прячем “desktop pills”, показываем бургер */
+	.topnav--desktop {
 		display: none;
+	}
+
+	.navToggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* Mobile: topbar must stay pinned */
+	.topbar {
+		position: fixed;
+		left: 0;
+		right: 0;
+	}
+
+	body {
+		padding-top: var(--topbar-offset);
+	}
+
+	/* На mobile scroll-snap мешает длинным секциям (особенно API) */
+	main {
+		scroll-snap-type: none;
+	}
+
+	.hero,
+	.section {
+		scroll-snap-align: none;
+		scroll-snap-stop: normal;
 	}
 
 	html,

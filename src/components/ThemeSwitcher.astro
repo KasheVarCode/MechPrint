@@ -46,6 +46,8 @@ const THEMES: Array<{ id: ThemeId; label: string }> = [
 		</svg>
 	</summary>
 
+	<div class="theme-select__overlay" data-theme-overlay aria-hidden="true"></div>
+
 	<div class="theme-select__panel" role="group" aria-label={i18n.theme.ariaLabel}>
 		{THEMES.map((t) => (
 			<button
@@ -77,20 +79,6 @@ const THEMES: Array<{ id: ThemeId; label: string }> = [
 		]);
 
 		const root = document.documentElement;
-		const scope = document.currentScript?.closest('[data-theme-switcher]') ?? document;
-		const details = scope instanceof HTMLDetailsElement ? scope : null;
-
-		const currentIcons = Array.from(scope.querySelectorAll('[data-theme-current-icon]')).filter(
-			(el) => el instanceof HTMLElement
-		);
-		const currentLabels = Array.from(scope.querySelectorAll('[data-theme-current-label]')).filter(
-			(el) => el instanceof HTMLElement
-		);
-
-		const buttons = Array.from(scope.querySelectorAll('button[data-theme]')).filter(
-			(el) => el instanceof HTMLButtonElement
-		);
-		if (buttons.length === 0) return;
 
 		const normalize = (value) => {
 			if (!value) return null;
@@ -99,55 +87,94 @@ const THEMES: Array<{ id: ThemeId; label: string }> = [
 			return migrated && THEMES.has(migrated) ? migrated : null;
 		};
 
-		const setActive = (next) => {
+		const updateThemeOverlay = () => {
+			const anyOpen = !!document.querySelector('details[data-theme-switcher][open]');
+			root.classList.toggle('is-theme-open', anyOpen);
+		};
+
+		const init = (details) => {
+			const scope = details;
+			const overlay = scope.querySelector('[data-theme-overlay]');
+
+			const currentIcons = Array.from(scope.querySelectorAll('[data-theme-current-icon]')).filter(
+				(el) => el instanceof HTMLElement
+			);
+			const currentLabels = Array.from(scope.querySelectorAll('[data-theme-current-label]')).filter(
+				(el) => el instanceof HTMLElement
+			);
+			const buttons = Array.from(scope.querySelectorAll('button[data-theme]')).filter(
+				(el) => el instanceof HTMLButtonElement
+			);
+			if (buttons.length === 0) return;
+
+			const setActive = (next) => {
+				for (const b of buttons) {
+					const theme = b.getAttribute('data-theme');
+					const pressed = theme === next;
+					b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+				}
+			};
+
+			const setCurrent = (next) => {
+				for (const el of currentIcons) {
+					const theme = el.getAttribute('data-theme-current-icon');
+					const isActive = theme === next;
+					el.toggleAttribute('hidden', !isActive);
+				}
+				for (const el of currentLabels) {
+					const theme = el.getAttribute('data-theme-current-label');
+					const isActive = theme === next;
+					el.toggleAttribute('hidden', !isActive);
+				}
+			};
+
+			const saved = normalize(localStorage.getItem(STORAGE_KEY));
+			const initial = normalize(root.dataset.theme) || saved || 'main';
+			root.dataset.theme = initial;
+			setActive(initial);
+			setCurrent(initial);
+
 			for (const b of buttons) {
-				const theme = b.getAttribute('data-theme');
-				const pressed = theme === next;
-				b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+				b.addEventListener('click', () => {
+					const next = normalize(b.getAttribute('data-theme'));
+					if (!next) return;
+					root.dataset.theme = next;
+					setActive(next);
+					setCurrent(next);
+					localStorage.setItem(STORAGE_KEY, next);
+					details.open = false;
+					updateThemeOverlay();
+				});
 			}
-		};
 
-		const setCurrent = (next) => {
-			for (const el of currentIcons) {
-				const theme = el.getAttribute('data-theme-current-icon');
-				const isActive = theme === next;
-				el.toggleAttribute('hidden', !isActive);
+			details.addEventListener('toggle', updateThemeOverlay);
+			updateThemeOverlay();
+
+			if (overlay instanceof HTMLElement) {
+				overlay.addEventListener('click', () => {
+					details.open = false;
+					updateThemeOverlay();
+				});
 			}
-			for (const el of currentLabels) {
-				const theme = el.getAttribute('data-theme-current-label');
-				const isActive = theme === next;
-				el.toggleAttribute('hidden', !isActive);
-			}
-		};
 
-		const saved = normalize(localStorage.getItem(STORAGE_KEY));
-		const initial = normalize(root.dataset.theme) || saved || 'main';
-		root.dataset.theme = initial;
-		setActive(initial);
-		setCurrent(initial);
-
-		for (const b of buttons) {
-			b.addEventListener('click', () => {
-				const next = normalize(b.getAttribute('data-theme'));
-				if (!next) return;
-				root.dataset.theme = next;
-				setActive(next);
-				setCurrent(next);
-				localStorage.setItem(STORAGE_KEY, next);
-				if (details) details.open = false;
-			});
-		}
-
-		if (details) {
 			document.addEventListener('keydown', (e) => {
 				if (e.key === 'Escape') details.open = false;
+				if (e.key === 'Escape') updateThemeOverlay();
 			});
 			document.addEventListener('click', (e) => {
 				if (!details.open) return;
 				const target = e.target instanceof Node ? e.target : null;
-				if (target && !details.contains(target)) details.open = false;
+				if (target && !details.contains(target)) {
+					details.open = false;
+					updateThemeOverlay();
+				}
 			});
-		}
+		};
+
+		const switchers = Array.from(document.querySelectorAll('details[data-theme-switcher]')).filter(
+			(el) => el instanceof HTMLDetailsElement
+		);
+		for (const details of switchers) init(details);
 	})();
 </script>
 
@@ -242,6 +269,30 @@ const THEMES: Array<{ id: ThemeId; label: string }> = [
 		z-index: 50;
 	}
 
+	.theme-select__overlay {
+		display: none;
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: var(--topbar-offset);
+		height: calc(100svh - var(--topbar-offset));
+		height: calc(100dvh - var(--topbar-offset));
+		background: var(--mobile-nav-overlay-bg);
+		backdrop-filter: blur(26px) saturate(1.08);
+		isolation: isolate;
+		z-index: 40;
+	}
+
+	.theme-select__overlay::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		opacity: var(--mobile-nav-noise-opacity);
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+		mix-blend-mode: overlay;
+	}
+
 	.theme-select__option {
 		width: 100%;
 		display: flex;
@@ -319,6 +370,25 @@ const THEMES: Array<{ id: ThemeId; label: string }> = [
 	@media (min-width: 900px) {
 		.theme-select__trigger {
 			inline-size: 220px;
+		}
+	}
+
+	/* Mobile: в верхней панели показываем только иконку */
+	@media (max-width: 900px) {
+		.theme-select[open] .theme-select__overlay {
+			display: block;
+		}
+
+		.theme-select__currentLabel,
+		.theme-select__chevron {
+			display: none;
+		}
+
+		.theme-select__trigger {
+			width: 46px;
+			padding: 3px;
+			justify-content: center;
+			gap: 0;
 		}
 	}
 </style>

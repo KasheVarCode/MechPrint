@@ -5,6 +5,15 @@ import { ru as i18n } from '../i18n/ru';
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const homePrefix = isHome ? '' : '/';
 const toHash = (id: string) => `${homePrefix}#${id}`;
+
+const mobileLinks = [
+	{ href: toHash('cabinet'), label: i18n.nav.links.cabinet },
+	{ href: toHash('b2b'), label: i18n.nav.links.b2b },
+	{ href: toHash('pricing'), label: i18n.nav.links.pricing },
+	{ href: toHash('api'), label: i18n.nav.links.api },
+	{ href: toHash('contact'), label: i18n.nav.links.contact },
+	{ href: '/vacancies', label: i18n.nav.links.vacancies },
+];
 ---
 
 <header class="topbar">
@@ -13,12 +22,12 @@ const toHash = (id: string) => `${homePrefix}#${id}`;
 			<div class="brand__name">{i18n.brand.name}</div>
 		</a>
 
-		<nav class="topnav" aria-label={i18n.nav.ariaLabel}>
+		<nav class="topnav topnav--desktop" aria-label={i18n.nav.ariaLabel}>
 			<ul class="topnav__list">
 				<li><a class="topnav__link" href={toHash('cabinet')}>{i18n.nav.links.cabinet}</a></li>
 				<li><a class="topnav__link" href={toHash('b2b')}>{i18n.nav.links.b2b}</a></li>
-				<li><a class="topnav__link" href={toHash('api')}>{i18n.nav.links.api}</a></li>
 				<li><a class="topnav__link" href={toHash('pricing')}>{i18n.nav.links.pricing}</a></li>
+				<li><a class="topnav__link" href={toHash('api')}>{i18n.nav.links.api}</a></li>
 				<li><a class="topnav__link" href={toHash('contact')}>{i18n.nav.links.contact}</a></li>
 				<li><a class="topnav__link" href="/vacancies">{i18n.nav.links.vacancies}</a></li>
 			</ul>
@@ -26,7 +35,92 @@ const toHash = (id: string) => `${homePrefix}#${id}`;
 
 		<div class="topbar__right">
 			<ThemeSwitcher />
+			<button
+				class="navToggle"
+				type="button"
+				aria-label={i18n.nav.mobileMenu.open}
+				aria-expanded="false"
+				aria-controls="mobileNav"
+				data-mobile-nav-toggle
+			>
+				<span class="navToggle__icon" aria-hidden="true"></span>
+			</button>
 		</div>
 	</div>
+
+	<div class="mobileNavOverlay" hidden data-mobile-nav-overlay>
+		<div class="mobileNavSheet card" id="mobileNav" role="dialog" aria-modal="true">
+			<div class="mobileNavHead">
+				<strong class="mobileNavTitle">{i18n.nav.ariaLabel}</strong>
+				<button class="mobileNavClose" type="button" aria-label={i18n.nav.mobileMenu.close} data-mobile-nav-close>
+					×
+				</button>
+			</div>
+
+			<nav class="mobileNav" aria-label={i18n.nav.ariaLabel}>
+				<ul class="mobileNavList">
+					{mobileLinks.map((l) => (
+						<li>
+							<a
+								class="mobileNavLink"
+								href={l.href}
+								data-mobile-nav-link
+							>
+								{l.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+	<script is:inline>
+		(() => {
+			const btn = document.querySelector('[data-mobile-nav-toggle]');
+			const overlay = document.querySelector('[data-mobile-nav-overlay]');
+			const closeBtn = document.querySelector('[data-mobile-nav-close]');
+			const nav = document.getElementById('mobileNav');
+			if (!(btn instanceof HTMLElement)) return;
+			if (!(overlay instanceof HTMLElement)) return;
+			if (!(closeBtn instanceof HTMLElement)) return;
+			if (!nav) return;
+
+			const isOpen = () => btn.getAttribute('aria-expanded') === 'true';
+
+			const open = () => {
+				overlay.hidden = false;
+				btn.setAttribute('aria-expanded', 'true');
+				document.documentElement.classList.add('is-mobile-nav-open');
+				closeBtn.focus?.();
+			};
+
+			const close = () => {
+				overlay.hidden = true;
+				btn.setAttribute('aria-expanded', 'false');
+				document.documentElement.classList.remove('is-mobile-nav-open');
+				btn.focus?.();
+			};
+
+			btn.addEventListener('click', () => {
+				isOpen() ? close() : open();
+			});
+
+			closeBtn.addEventListener('click', close);
+
+			overlay.addEventListener('click', (e) => {
+				if (e.target === overlay) close();
+			});
+
+			overlay.addEventListener('click', (e) => {
+				const a = e.target instanceof Element ? e.target.closest('[data-mobile-nav-link]') : null;
+				if (a) close();
+			});
+
+			window.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape' && isOpen()) close();
+			});
+		})();
+	</script>
 </header>
 
