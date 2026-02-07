@@ -738,6 +738,10 @@ html[data-theme='kawaii'] {
 	max-width: 78ch;
 }
 
+.sectionSubtitle--wide {
+	max-width: none;
+}
+
 .featureGrid {
 	display: grid;
 	grid-template-columns: repeat(12, minmax(0, 1fr));

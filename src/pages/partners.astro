@@ -8,20 +8,71 @@ import { ru as i18n } from '../i18n/ru';
 		<section class="container section" id="partners">
 			<div class="sectionHead">
 				<h1 class="sectionTitle">{i18n.partners.title}</h1>
-				<p class="muted sectionSubtitle">{i18n.partners.subtitle}</p>
+				<p class="muted sectionSubtitle sectionSubtitle--wide">{i18n.partners.subtitle}</p>
 			</div>
 
-			<div class="featureGrid">
-				{i18n.partners.items.map((v) => (
+			<div class="card card--padded">
+				<div class="muted" style="margin-bottom: 10px;">{i18n.partners.intro.title}</div>
+				{i18n.partners.intro.paragraphs.map((p) => (
+					<p style="margin: 10px 0 0 0;">{p}</p>
+				))}
+			</div>
+
+			<div class="card card--padded" style="margin-top: 14px;">
+				<strong>{i18n.partners.roles.title}</strong>
+				<ul class="apiBadgeList" aria-label={i18n.partners.roles.title} style="margin-top: 10px;">
+					{i18n.partners.rolesShort.map((r) => (
+						<li class="apiBadgeItem">
+							<code class="apiBadge">{r}</code>
+						</li>
+					))}
+				</ul>
+			</div>
+
+			<div class="card card--padded" style="margin-top: 14px;">
+				<strong>{i18n.partners.interaction.title}</strong>
+				<ul class="list" style="margin-top: 10px;">
+					{i18n.partners.interaction.points.map((t) => (
+						<li>{t}</li>
+					))}
+				</ul>
+			</div>
+
+			<div class="featureGrid" style="margin-top: 14px;">
+				{i18n.partners.roles.items.map((role) => (
 					<article class="featureCard card">
-						<strong class="featureCard__title">{v.title}</strong>
-						<div class="muted featureCard__text">{v.text}</div>
+						<div class="muted" style="font-weight: 900;">{role.key}</div>
+						<strong class="featureCard__title" style="margin-top: 6px;">{role.title}</strong>
+						<div class="muted featureCard__text" style="margin-top: 10px;">
+							<strong style="color: var(--color-text);">{role.formatTitle}</strong>
+							<ul class="list" style="margin-top: 8px;">
+								{role.points.map((t) => (
+									<li>{t}</li>
+								))}
+							</ul>
+						</div>
 					</article>
 				))}
 			</div>
 
-			<div style="margin-top: 18px;">
-				<a class="btn btn-primary" href="/#contact">{i18n.partners.cta}</a>
+			<div class="card card--padded" style="margin-top: 14px;">
+				<strong>{i18n.partners.approach.title}</strong>
+				<p class="muted" style="margin: 10px 0 0 0;">{i18n.partners.approach.lead}</p>
+				<ul class="list" style="margin-top: 8px;">
+					{i18n.partners.approach.points.map((t) => (
+						<li>{t}</li>
+					))}
+				</ul>
+				<p style="margin: 10px 0 0 0;">{i18n.partners.approach.conclusion}</p>
+			</div>
+
+			<div class="card card--padded" style="margin-top: 14px;">
+				<strong>{i18n.partners.contact.title}</strong>
+				<div style="margin-top: 10px;">
+					<a class="btn btn-primary" href={`mailto:${i18n.partners.contact.email}`}>
+						{i18n.partners.contact.email}
+					</a>
+				</div>
 			</div>
 		</section>
 	</main>
