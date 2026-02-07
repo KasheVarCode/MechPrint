@@ -224,6 +224,33 @@ export const ru = {
 		title: 'Контакты',
 		phoneLabel: 'Телефон',
 		placeholder: 'Санкт-Петербург, ул. Пугачёва 5-7',
+		blocks: {
+			primary: {
+				rows: [
+					{ label: 'Название', value: 'ИП Стропус Наталья Игоревна', kind: 'text' },
+					{ label: 'Адрес', value: 'Санкт-Петербург, ул. Пугачёва 5-7', kind: 'text' },
+					{ label: 'Телефон', value: '+7 (981) 750-61-61', kind: 'phone' },
+					{ label: 'Телефон для заявок', value: '+7 (981) 750-61-61', kind: 'phone' },
+					{ label: 'Telegram', value: '@mechprint', kind: 'telegram' },
+					{ label: 'Telegram bot', value: '—', kind: 'text' },
+					{ label: 'MAX', value: '—', kind: 'text' },
+				],
+			},
+			secondary: {
+				emailTitle: 'Электронная почта',
+				emails: [
+					{ label: 'Клиентам', value: 'service@mechprint.ru', kind: 'email' },
+					{ label: 'Партнёрам', value: 'team@mechprint.ru', kind: 'email' },
+					{ label: 'Предложения', value: 'info@mechprint.ru', kind: 'email' },
+				],
+				managementTitle: 'Руководство',
+				management: [
+					{ label: 'Генеральный директор', value: 'ceo@mechprint.ru', kind: 'email' },
+					{ label: 'Исполнительный директор', value: 'coo@mechprint.ru', kind: 'email' },
+					{ label: 'Технический директор', value: 'cto@mechprint.ru', kind: 'email' },
+				],
+			},
+		},
 		labels: {
 			address: 'Адрес',
 			phone: 'Телефон',

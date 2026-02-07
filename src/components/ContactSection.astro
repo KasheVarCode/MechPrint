@@ -1,0 +1,113 @@
+---
+import { ru as i18n } from '../i18n/ru';
+
+const digitsOnly = (value: string) => value.replace(/\D+/g, '');
+
+type Row = {
+	label: string;
+	value: string;
+	kind: 'text' | 'phone' | 'email' | 'telegram';
+};
+
+const isValidEmail = (value: string) => {
+	const trimmed = String(value ?? '').trim();
+	const at = trimmed.indexOf('@');
+	if (at <= 0) return false;
+	const domain = trimmed.slice(at + 1);
+	return domain.length > 3 && domain.includes('.');
+};
+
+const hrefFor = (row: Row) => {
+	const value = String(row.value ?? '').trim();
+	if (!value || value === '—') return null;
+
+	if (row.kind === 'phone') {
+		const digits = digitsOnly(value);
+		return digits ? `tel:${digits}` : null;
+	}
+	if (row.kind === 'email') {
+		return isValidEmail(value) ? `mailto:${value}` : null;
+	}
+	if (row.kind === 'telegram') {
+		const name = value.startsWith('@') ? value.slice(1) : value;
+		return name ? `https://t.me/${name}` : null;
+	}
+	return null;
+};
+
+const primaryRows = i18n.contact.blocks.primary.rows as unknown as Row[];
+const secondary = i18n.contact.blocks.secondary;
+const emailRows = secondary.emails as unknown as Row[];
+const managementRows = secondary.management as unknown as Row[];
+---
+
+<section class="container section section--compact" id="contact">
+	<div class="sectionHead">
+		<h2 class="sectionTitle">{i18n.contact.title}</h2>
+	</div>
+
+	<div class="contactGrid">
+		<div class="card card--padded contactCard">
+			<ul class="siteFooter__list">
+				{primaryRows.map((row) => {
+					const href = hrefFor(row);
+					return (
+						<li class="siteFooter__item">
+							<span class="muted siteFooter__label">{row.label}</span>
+							{href ? (
+								<a class="siteFooter__valueLink" href={href} target={row.kind === 'telegram' ? '_blank' : undefined} rel={row.kind === 'telegram' ? 'noreferrer' : undefined}>
+									{row.value}
+								</a>
+							) : (
+								<span class="siteFooter__value">{row.value}</span>
+							)}
+						</li>
+					);
+				})}
+			</ul>
+		</div>
+
+		<div class="card card--padded contactCard">
+			<strong class="siteFooter__title">{secondary.emailTitle}</strong>
+			<ul class="siteFooter__list" style="margin-top: 12px;">
+				{emailRows.map((row) => {
+					const href = hrefFor(row);
+					return (
+						<li class="siteFooter__item">
+							<span class="muted siteFooter__label">{row.label}</span>
+							{href ? (
+								<a class="siteFooter__valueLink" href={href}>
+									{row.value}
+								</a>
+							) : (
+								<span class="siteFooter__value">{row.value}</span>
+							)}
+						</li>
+					);
+				})}
+			</ul>
+
+			<div class="contactDivider" aria-hidden="true"></div>
+
+			<strong class="siteFooter__title">{secondary.managementTitle}</strong>
+			<ul class="siteFooter__list" style="margin-top: 12px;">
+				{managementRows.map((row) => {
+					const href = hrefFor(row);
+					return (
+						<li class="siteFooter__item">
+							<span class="muted siteFooter__label">{row.label}</span>
+							{href ? (
+								<a class="siteFooter__valueLink" href={href}>
+									{row.value}
+								</a>
+							) : (
+								<span class="siteFooter__value">{row.value}</span>
+							)}
+						</li>
+					);
+				})}
+			</ul>
+		</div>
+	</div>
+</section>
+
