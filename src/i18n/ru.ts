@@ -227,7 +227,7 @@ export const ru = {
 		blocks: {
 			primary: {
 				rows: [
-					{ label: 'Название', value: 'ИП Стропус Наталья Игоревна', kind: 'text' },
+					{ label: 'Название', value: 'ООО БалтЮгСервис', kind: 'text' },
 					{ label: 'Адрес', value: 'Санкт-Петербург, ул. Пугачёва 5-7', kind: 'text' },
 					{ label: 'Телефон', value: '+7 (981) 750-61-61', kind: 'phone' },
 					{ label: 'Телефон для заявок', value: '+7 (981) 750-61-61', kind: 'phone' },
