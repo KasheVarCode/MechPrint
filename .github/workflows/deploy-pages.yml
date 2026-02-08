@@ -21,35 +21,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Detect Astro app directory
+      - name: Set build output dir
         shell: bash
-        run: |
-          # Поддерживаем два варианта структуры репозитория:
-          # 1) Astro-проект в корне репо
-          # 2) Astro-проект в подпапке MechPrintAstro/
-          if [ -f "package.json" ] && [ -f "astro.config.mjs" ]; then
-            echo "APP_DIR=." >> "$GITHUB_ENV"
-          elif [ -f "MechPrintAstro/package.json" ] && [ -f "MechPrintAstro/astro.config.mjs" ]; then
-            echo "APP_DIR=MechPrintAstro" >> "$GITHUB_ENV"
-          else
-            echo "Не найден Astro-проект (package.json + astro.config.mjs)." >&2
-            echo "Ожидаю корень репо или папку MechPrintAstro/." >&2
-            exit 1
-          fi
-
-          echo "DIST_DIR=${APP_DIR}/dist" >> "$GITHUB_ENV"
+        run: echo "DIST_DIR=dist" >> "$GITHUB_ENV"
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
-            MechPrintAstro/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        working-directory: ${{ env.APP_DIR }}
         run: npm ci
 
       - name: Configure Astro base/site for Pages
@@ -57,8 +40,8 @@ jobs:
         run: |
           REPO_NAME="${GITHUB_REPOSITORY#*/}"
 
-          if [ -f "${APP_DIR}/CNAME" ]; then
-            DOMAIN="$(tr -d '\r\n' < "${APP_DIR}/CNAME")"
+          if [ -f "CNAME" ]; then
+            DOMAIN="$(tr -d '\r\n' < "CNAME")"
             echo "ASTRO_SITE=https://${DOMAIN}" >> "$GITHUB_ENV"
             echo "ASTRO_BASE=/" >> "$GITHUB_ENV"
           else
@@ -67,7 +50,6 @@ jobs:
           fi
 
       - name: Build
-        working-directory: ${{ env.APP_DIR }}
         run: npm run build
 
       - name: Ensure Pages files (CNAME + .nojekyll)
@@ -75,8 +57,8 @@ jobs:
         run: |
           mkdir -p "${DIST_DIR}"
           touch "${DIST_DIR}/.nojekyll"
-          if [ -f "${APP_DIR}/CNAME" ]; then
-            cp "${APP_DIR}/CNAME" "${DIST_DIR}/CNAME"
+          if [ -f "CNAME" ]; then
+            cp "CNAME" "${DIST_DIR}/CNAME"
           fi
 
       - name: Upload Pages artifact
