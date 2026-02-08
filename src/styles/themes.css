@@ -142,15 +142,15 @@ html[data-theme='kawaii'] {
 	--color-primary-2: #f9a8d4; /* soft pink */
 	--color-primary-contrast: #111827;
 
-	/* cute polka + soft gradient */
+	/* cute clouds background + soft tint (subtle, readable) */
 	--bg-image:
-		radial-gradient(6px 6px at 12px 12px, rgba(251, 113, 133, 0.18) 40%, transparent 41%),
-		radial-gradient(6px 6px at 44px 28px, rgba(249, 168, 212, 0.14) 40%, transparent 41%),
 		radial-gradient(1200px 800px at 18% 12%, rgba(251, 113, 133, 0.22), transparent 60%),
 		radial-gradient(900px 700px at 82% 18%, rgba(249, 168, 212, 0.18), transparent 62%),
-		radial-gradient(900px 700px at 55% 92%, rgba(168, 85, 247, 0.12), transparent 64%);
-	--bg-size: 64px 64px, 64px 64px, auto, auto, auto;
-	--bg-position: 0 0, 0 0, 0 0, 0 0, 0 0;
-	--bg-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat;
+		radial-gradient(900px 700px at 55% 92%, rgba(168, 85, 247, 0.1), transparent 64%),
+		linear-gradient(180deg, rgba(255, 255, 255, 0.62), transparent 38%),
+		url('/kawaii_bg.webp');
+	--bg-size: auto, auto, auto, auto, cover;
+	--bg-position: 0 0, 0 0, 0 0, 0 0, 50% 0%;
+	--bg-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
 }
 

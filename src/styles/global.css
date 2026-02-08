@@ -1157,6 +1157,13 @@ html[data-theme='kawaii'] {
 	background: color-mix(in srgb, var(--color-surface) 65%, transparent);
 }
 
+/* API docs: use the same “matte” look as regular cards */
+.apiPanel.card {
+	background: var(--color-surface);
+	box-shadow: var(--shadow-2);
+	backdrop-filter: blur(18px);
+}
+
 .apiPanel__head {
 	display: grid;
 	gap: 6px;
