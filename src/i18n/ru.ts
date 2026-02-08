@@ -15,7 +15,7 @@ export const ru = {
 			api: 'API интеграция',
 			pricing: 'Тарифы',
 			contact: 'Контакты',
-			partners: 'Партнёрам',
+			partners: 'Сотрудничество',
 		},
 	},
 	theme: {
@@ -240,7 +240,7 @@ export const ru = {
 				emailTitle: 'Электронная почта',
 				emails: [
 					{ label: 'Клиентам', value: 'service@mechprint.ru', kind: 'email' },
-					{ label: 'Партнёрам', value: 'team@mechprint.ru', kind: 'email' },
+					{ label: 'Сотрудничество', value: 'team@mechprint.ru', kind: 'email' },
 					{ label: 'Предложения', value: 'info@mechprint.ru', kind: 'email' },
 				],
 				managementTitle: 'Руководство',
@@ -268,7 +268,7 @@ export const ru = {
 		twitter: '@mechprint',
 	},
 	partners: {
-		title: 'Партнёрам',
+		title: 'Сотрудничество',
 		subtitle: 'Мы сотрудничаем с независимыми специалистами и компаниями в формате партнёрских задач и заявок.',
 		rolesShort: ['Field Service Engineer (FSE)', 'Technical Support Engineer', 'Service Advisor'],
 		intro: {
@@ -282,7 +282,7 @@ export const ru = {
 			text: 'Сотрудничество происходит по согласованным заявкам: условия, объём работ и сроки определяются до начала. Доступ к системе предоставляется на время выполнения, а после закрытия заявка фиксируется без изменений.',
 		},
 		roles: {
-			title: 'Роли партнёров',
+			title: 'Роли в сотрудничестве',
 			items: [
 				{
 					key: 'Field Service Engineer (FSE)',
