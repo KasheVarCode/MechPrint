@@ -36,9 +36,27 @@ const hrefFor = (row: Row) => {
 };
 
 const primaryRows = i18n.contact.blocks.primary.rows as unknown as Row[];
+const requisitesTitle = i18n.contact.blocks.primary.requisitesTitle;
 const secondary = i18n.contact.blocks.secondary;
 const emailRows = secondary.emails as unknown as Row[];
 const managementRows = secondary.management as unknown as Row[];
+
+const requisitesLabels = new Set([
+	'Название',
+	'Адрес',
+	'ИНН',
+	'КПП',
+	'ОГРН',
+	'ОГРНИП',
+	'Юр. адрес',
+	'Банк',
+	'Р/с',
+	'К/с',
+	'БИК',
+]);
+
+const requisitesRows = primaryRows.filter((r) => requisitesLabels.has(r.label));
+const contactRows = primaryRows.filter((r) => !requisitesLabels.has(r.label));
 ---
 
 <section class="container section section--compact" id="contact">
@@ -49,7 +67,7 @@ const managementRows = secondary.management as unknown as Row[];
 	<div class="contactGrid">
 		<div class="card card--padded contactCard">
 			<ul class="siteFooter__list">
-				{primaryRows.map((row) => {
+				{contactRows.map((row) => {
 					const href = hrefFor(row);
 					return (
 						<li class="siteFooter__item">
@@ -65,12 +83,33 @@ const managementRows = secondary.management as unknown as Row[];
 					);
 				})}
 			</ul>
-		</div>
 
-		<div class="card card--padded contactCard">
+			<div class="contactDivider" aria-hidden="true"></div>
+
 			<strong class="siteFooter__title">{secondary.emailTitle}</strong>
 			<ul class="siteFooter__list" style="margin-top: 12px;">
 				{emailRows.map((row) => {
+					const href = hrefFor(row);
+					return (
+						<li class="siteFooter__item">
+							<span class="muted siteFooter__label">{row.label}</span>
+							{href ? (
+								<a class="siteFooter__valueLink" href={href}>
+									{row.value}
+								</a>
+							) : (
+								<span class="siteFooter__value">{row.value}</span>
+							)}
+						</li>
+					);
+				})}
+			</ul>
+		</div>
+
+		<div class="card card--padded contactCard">
+			<strong class="siteFooter__title">{requisitesTitle}</strong>
+			<ul class="siteFooter__list" style="margin-top: 12px;">
+				{requisitesRows.map((row) => {
 					const href = hrefFor(row);
 					return (
 						<li class="siteFooter__item">

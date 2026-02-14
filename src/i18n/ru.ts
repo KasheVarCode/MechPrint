@@ -226,11 +226,15 @@ export const ru = {
 		placeholder: 'Санкт-Петербург, ул. Пугачёва 5-7',
 		blocks: {
 			primary: {
+				requisitesTitle: 'Реквизиты:',
 				rows: [
 					{ label: 'Название', value: 'ООО БалтЮгСервис', kind: 'text' },
-					{ label: 'Адрес', value: 'Санкт-Петербург, ул. Пугачёва 5-7', kind: 'text' },
+					{ label: 'Адрес', value: 'Санкт-Петербург, Большой П.С. пр-кт, дом 17, литера А , помещение 10Н ком. 2', kind: 'text' },
+					{ label: 'ИНН', value: '7813660260', kind: 'text' },
+					{ label: 'КПП', value: '781301001', kind: 'text' },
+					{ label: 'ОГРН', value: '1227800006510', kind: 'text' },
 					{ label: 'Телефон', value: '+7 (981) 750-61-61', kind: 'phone' },
-					{ label: 'Телефон для заявок', value: '+7 (981) 750-61-61', kind: 'phone' },
+					{ label: 'Сервисный отдел', value: '+7 (999) 518-77-20', kind: 'phone' },
 					{ label: 'Telegram', value: '@mechprint', kind: 'telegram' },
 					{ label: 'Telegram bot', value: '—', kind: 'text' },
 					{ label: 'MAX', value: '—', kind: 'text' },
@@ -246,7 +250,6 @@ export const ru = {
 				managementTitle: 'Руководство',
 				management: [
 					{ label: 'Генеральный директор', value: 'ceo@mechprint.ru', kind: 'email' },
-					{ label: 'Операционный директор', value: 'coo@mechprint.ru', kind: 'email' },
 					{ label: 'Технический директор', value: 'cto@mechprint.ru', kind: 'email' },
 				],
 			},
@@ -258,7 +261,7 @@ export const ru = {
 			whatsapp: 'WhatsApp',
 			telegram: 'Telegram',
 		},
-		address: 'Санкт-Петербург, ул. Пугачёва 5-7',
+		address: '	197198, Санкт-Петербург г, Большой П.С. пр-кт, дом 17, литера А , помещение 10Н ком. 2',
 		email: 'info@mechprint.ru',
 		phone: '+7 (981) 750-61-61',
 		whatsapp: '+7 (981) 750-61-61',
@@ -313,6 +316,7 @@ export const ru = {
 	footer: {
 		created: 'Created',
 		brand: 'KASHEVARCODE',
+		privacy: 'Privacy Policy',
 	},
 } as const;
 
